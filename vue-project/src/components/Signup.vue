@@ -1,25 +1,20 @@
 <template>
-  <h1 class="header">Sign up</h1>
+  <h1 id="header">Sign up</h1>
   <div class="register">
       <input type="text" placeholder="Enter Name" />
       <input type="text" placeholder="Enter Email" />
       <input type="password" placeholder="Enter Password" />
       <button>Sign up</button>
   </div>
-</template>
+  </template>
   
-<script>
+  <script>
   export default {
       name: 'Signup'
   }
-</script>
-<style>
-  body{
-      background: rgb(206, 205, 205);
-  }
-  .header{
-  color: black;
-}
+  </script>
+  <style>
+
   .register input{
       width: 320px;
       height: 40px;
@@ -38,4 +33,5 @@
       color:black;
       cursor:pointer;
   }
+
   </style>
