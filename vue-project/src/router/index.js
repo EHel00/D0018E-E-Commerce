@@ -3,6 +3,7 @@ import Signup from '@/components/Signup.vue';
 import Homepage from '@/components/Homepage.vue';
 import Store from '@/components/Store.vue';
 import Signin from '@/components/Signin.vue';
+import viewProduct from '@/components/Productpage/viewProduct.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,7 +29,11 @@ const router = createRouter({
     name: 'Signin',
     component: Signin
     },
-
+    {
+      path: '/Store/:productName',
+      name: 'viewProduct',
+      component: viewProduct
+    },
   ]
 });
 
