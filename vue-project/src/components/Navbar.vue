@@ -2,16 +2,18 @@
     <nav class="navbar">
       <div class="navbar-brand">MyStore</div>
       <ul class="navbar-nav">
-        <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Store</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Checkout</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
+        <RouterLink to="/" class="nav-link">Home</RouterLink>
+        <RouterLink to="/store" class="nav-link">Store</RouterLink>
+        <RouterLink to="/checkout" class="nav-link">Checkout</RouterLink>
+        <RouterLink to="/signin" class="nav-link">Sign In</RouterLink>
+        <RouterLink to="/signup" class="nav-link">Sign Up</RouterLink>
       </ul>
     </nav>
   </template>
   
   <script>
+import { RouterLink, routerViewLocationKey } from 'vue-router';
+
   export default {
     name: 'Navbar'
   }
