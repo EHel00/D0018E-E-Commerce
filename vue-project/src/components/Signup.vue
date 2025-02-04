@@ -1,20 +1,34 @@
 <template>
-  <h1 id="header">Sign up</h1>
-  <div class="register">
-      <input type="text" placeholder="Enter Name" />
-      <input type="text" placeholder="Enter Email" />
-      <input type="password" placeholder="Enter Password" />
-      <button>Sign up</button>
-  </div>
+    <div>
+      <Navbar />
+      <h1 id="header">Sign up</h1>
+      <div class="register">
+        <input type="text" placeholder="Email" />
+        <input type="text" placeholder="Phonenumber" />
+        <input type="text" placeholder="Address" />
+        <input type="password" placeholder="Password" />
+        <input type="password" placeholder="Confirm Password" />
+
+        <button>Sign Up</button>
+      </div>
+    </div>
   </template>
   
   <script>
+ import Navbar from './Navbar.vue';
+ import router from '@/router';
   export default {
-      name: 'Signup'
+    name: 'Signup',
+    components: {
+    Navbar
   }
+  }
+
   </script>
   <style>
-
+#header {
+    padding-bottom: 20px;
+}
   .register input{
       width: 320px;
       height: 40px;
