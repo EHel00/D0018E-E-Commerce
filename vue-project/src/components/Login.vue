@@ -1,12 +1,12 @@
 <template>
     <div>
       <Navbar />
-      <h1 id="header">Sign in</h1>
+      <h1 id="header">Login</h1>
       <div class="register">
         <input type="text" placeholder="Email" />
         <input type="password" placeholder="Password" />
 
-        <button>Sign in</button>
+        <button>Login</button>
       </div>
     </div>
   </template>
@@ -15,7 +15,7 @@
  import Navbar from './Navbar.vue';
  import router from '@/router';
   export default {
-    name: 'Signin',
+    name: 'Login',
     components: {
     Navbar
   }

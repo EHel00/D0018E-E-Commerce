@@ -8,17 +8,19 @@
 </div>
   </template>
   
-  <script>
- import Navbar from './Navbar.vue';
- import router from '@/router';
-  export default {
-    name: 'Home',
-    components: {
-    Navbar
-  }
-  }
+<script setup>
 
-  </script>
+import apiClient from '@/config/axios';
+import Navbar from './Navbar.vue';
+import { onMounted} from 'vue';
+
+onMounted(async () => {
+    const response = await apiClient.get('/user/test');
+    console.log(response.data.message);
+    }
+);
+
+</script>
   <style>
   /* Add your styles here */
   </style>
