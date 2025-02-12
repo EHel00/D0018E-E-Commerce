@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const logger = require("./utility/logger");
 
 const dotenv = require("dotenv").config();
 
@@ -15,5 +15,5 @@ app.use(cors({ origin :'*'}));
 app.use("/api/user", require("./routes/userRoutes"));
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    logger.info(`Server running on port ${port}`);
 });
