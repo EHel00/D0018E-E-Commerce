@@ -146,6 +146,31 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `mydatabase`.`Grade`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydatabase`.`Grade` ;
+
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Grade` (
+  `idGrade` INT NOT NULL AUTO_INCREMENT,
+  `User` INT NULL,
+  `Product` INT NULL,
+  `Grade` INT NULL,
+  `Comment` VARCHAR(255) NULL,
+  PRIMARY KEY (`idGrade`),
+  INDEX `Grade_User_FK_idx` (`User` ASC) VISIBLE,
+  INDEX `Grade_Product_FK_idx` (`Product` ASC) VISIBLE,
+  CONSTRAINT `Grade_User_FK`
+    FOREIGN KEY (`User`)
+    REFERENCES `mydatabase`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Grade_Product_FK`
+    FOREIGN KEY (`Product`)
+    REFERENCES `mydatabase`.`Product` (`idProduct`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
