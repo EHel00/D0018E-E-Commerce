@@ -7,9 +7,9 @@ const getUsers = async(req, res) => {
     db.query(QUERY.SELECT_USERS, (error, results) => {
         if(!results) {
             logger.error(error.message);
-            res.status(404).send({message: "No users found"});
+            res.status(200).json({message: "No users found"});
         } else {
-            res.status(200).send({message: "Users found"}, results);
+            res.status(200).json({message: "Users found", data: results});
         }
         
     });
@@ -17,12 +17,12 @@ const getUsers = async(req, res) => {
 
 const createUser = async(req,res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating user`);
-    db.query(QUERY.CREATE_USER, (error, results) => {
+    db.query(QUERY.CREATE_USER, Object.values(req.body), (error, results) => {
         if(!results) {
             logger.error(error.message);
-            res.status(400).send({message: "Error"});
+            res.status(400).json({message: "Error"});
         } else {
-            res.status(201).send({message: "Created"});
+            res.status(201).json({message: "Created"});
         }
     });
 }

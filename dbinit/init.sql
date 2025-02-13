@@ -5,6 +5,9 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
 -- Schema mydatabase
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `mydatabase` ;
@@ -16,52 +19,18 @@ CREATE SCHEMA IF NOT EXISTS `mydatabase` DEFAULT CHARACTER SET utf8mb4 COLLATE u
 USE `mydatabase` ;
 
 -- -----------------------------------------------------
--- Table `mydatabase`.`User`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`User` ;
-
-CREATE TABLE IF NOT EXISTS `mydatabase`.`User` (
-  `idUser` INT NOT NULL AUTO_INCREMENT,
-  `Email` VARCHAR(45) NULL,
-  `Password` VARCHAR(45) NULL,
-  `PhoneNumber` VARCHAR(45) NULL,
-  `FirstName` VARCHAR(45) NULL,
-  `LastName` VARCHAR(45) NULL,
-  `Address` VARCHAR(45) NULL,
-  PRIMARY KEY (`idUser`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydatabase`.`Role`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`Role` ;
-
-CREATE TABLE IF NOT EXISTS `mydatabase`.`Role` (
-  `RoleID` INT NOT NULL AUTO_INCREMENT,
-  `User` INT NULL,
-  `Role` VARCHAR(45) NULL,
-  PRIMARY KEY (`RoleID`),
-  INDEX `Role_User_FK_idx` (`User` ASC) VISIBLE,
-  CONSTRAINT `Role_User_FK`
-    FOREIGN KEY (`User`)
-    REFERENCES `mydatabase`.`User` (`idUser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydatabase`.`Category`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydatabase`.`Category` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Category` (
   `CategoryID` INT NOT NULL AUTO_INCREMENT,
-  `Description` VARCHAR(255) NULL,
-  `Image` VARCHAR(255) NULL,
+  `Description` VARCHAR(255) NULL DEFAULT NULL,
+  `Image` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`CategoryID`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -71,36 +40,62 @@ DROP TABLE IF EXISTS `mydatabase`.`Product` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Product` (
   `idProduct` INT NOT NULL AUTO_INCREMENT,
-  `Category` INT NULL,
-  `Size` VARCHAR(45) NULL,
-  `Price` DECIMAL(4,2) NULL,
+  `Category` INT NULL DEFAULT NULL,
+  `Size` VARCHAR(45) NULL DEFAULT NULL,
+  `Price` DECIMAL(4,2) NULL DEFAULT NULL,
   PRIMARY KEY (`idProduct`),
   INDEX `Product_Category_FK_idx` (`Category` ASC) VISIBLE,
   CONSTRAINT `Product_Category_FK`
     FOREIGN KEY (`Category`)
-    REFERENCES `mydatabase`.`Category` (`CategoryID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `mydatabase`.`Category` (`CategoryID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mydatabase`.`Supply`
+-- Table `mydatabase`.`User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`Supply` ;
+DROP TABLE IF EXISTS `mydatabase`.`User` ;
 
-CREATE TABLE IF NOT EXISTS `mydatabase`.`Supply` (
-  `idSupply` INT NOT NULL AUTO_INCREMENT,
-  `Product` INT NULL,
-  `Quantity` INT NULL,
-  PRIMARY KEY (`idSupply`),
-  INDEX `Supply_Product_FK_idx` (`Product` ASC) VISIBLE,
-  CONSTRAINT `Supply_Product_FK`
+CREATE TABLE IF NOT EXISTS `mydatabase`.`User` (
+  `idUser` INT NOT NULL AUTO_INCREMENT,
+  `Email` VARCHAR(45) NULL DEFAULT NULL,
+  `Password` VARCHAR(45) NULL DEFAULT NULL,
+  `PhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+  `FirstName` VARCHAR(45) NULL DEFAULT NULL,
+  `LastName` VARCHAR(45) NULL DEFAULT NULL,
+  `Address` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idUser`),
+  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydatabase`.`Grade`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydatabase`.`Grade` ;
+
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Grade` (
+  `idGrade` INT NOT NULL AUTO_INCREMENT,
+  `User` INT NULL DEFAULT NULL,
+  `Product` INT NULL DEFAULT NULL,
+  `Grade` INT NULL DEFAULT NULL,
+  `Comment` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`idGrade`),
+  INDEX `Grade_User_FK_idx` (`User` ASC) VISIBLE,
+  INDEX `Grade_Product_FK_idx` (`Product` ASC) VISIBLE,
+  CONSTRAINT `Grade_Product_FK`
     FOREIGN KEY (`Product`)
-    REFERENCES `mydatabase`.`Product` (`idProduct`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `mydatabase`.`Product` (`idProduct`),
+  CONSTRAINT `Grade_User_FK`
+    FOREIGN KEY (`User`)
+    REFERENCES `mydatabase`.`User` (`idUser`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -110,16 +105,35 @@ DROP TABLE IF EXISTS `mydatabase`.`Order` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Order` (
   `idOrder` INT NOT NULL AUTO_INCREMENT,
-  `Product` INT NULL,
-  `Quantity` INT NULL,
+  `Product` INT NULL DEFAULT NULL,
+  `Quantity` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idOrder`),
   INDEX `Order_Product_FK_idx` (`Product` ASC) VISIBLE,
   CONSTRAINT `Order_Product_FK`
     FOREIGN KEY (`Product`)
-    REFERENCES `mydatabase`.`Product` (`idProduct`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `mydatabase`.`Product` (`idProduct`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydatabase`.`Role`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydatabase`.`Role` ;
+
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Role` (
+  `RoleID` INT NOT NULL AUTO_INCREMENT,
+  `User` INT NULL DEFAULT NULL,
+  `Role` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`RoleID`),
+  INDEX `Role_User_FK_idx` (`User` ASC) VISIBLE,
+  CONSTRAINT `Role_User_FK`
+    FOREIGN KEY (`User`)
+    REFERENCES `mydatabase`.`User` (`idUser`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -129,48 +143,40 @@ DROP TABLE IF EXISTS `mydatabase`.`ShoppingCart` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
   `idShoppingCart` INT NOT NULL AUTO_INCREMENT,
-  `User` INT NULL,
-  `Order` INT NULL,
+  `User` INT NULL DEFAULT NULL,
+  `Order` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idShoppingCart`),
   INDEX `ShoppingCart_Order_FK_idx` (`Order` ASC) VISIBLE,
   INDEX `ShoppingCart_User_FK_idx` (`User` ASC) VISIBLE,
   CONSTRAINT `ShoppingCart_Order_FK`
     FOREIGN KEY (`Order`)
-    REFERENCES `mydatabase`.`Order` (`idOrder`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `mydatabase`.`Order` (`idOrder`),
   CONSTRAINT `ShoppingCart_User_FK`
     FOREIGN KEY (`User`)
-    REFERENCES `mydatabase`.`User` (`idUser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `mydatabase`.`User` (`idUser`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
 
 -- -----------------------------------------------------
--- Table `mydatabase`.`Grade`
+-- Table `mydatabase`.`Supply`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`Grade` ;
+DROP TABLE IF EXISTS `mydatabase`.`Supply` ;
 
-CREATE TABLE IF NOT EXISTS `mydatabase`.`Grade` (
-  `idGrade` INT NOT NULL AUTO_INCREMENT,
-  `User` INT NULL,
-  `Product` INT NULL,
-  `Grade` INT NULL,
-  `Comment` VARCHAR(255) NULL,
-  PRIMARY KEY (`idGrade`),
-  INDEX `Grade_User_FK_idx` (`User` ASC) VISIBLE,
-  INDEX `Grade_Product_FK_idx` (`Product` ASC) VISIBLE,
-  CONSTRAINT `Grade_User_FK`
-    FOREIGN KEY (`User`)
-    REFERENCES `mydatabase`.`User` (`idUser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Grade_Product_FK`
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Supply` (
+  `idSupply` INT NOT NULL AUTO_INCREMENT,
+  `Product` INT NULL DEFAULT NULL,
+  `Quantity` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`idSupply`),
+  INDEX `Supply_Product_FK_idx` (`Product` ASC) VISIBLE,
+  CONSTRAINT `Supply_Product_FK`
     FOREIGN KEY (`Product`)
-    REFERENCES `mydatabase`.`Product` (`idProduct`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `mydatabase`.`Product` (`idProduct`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
