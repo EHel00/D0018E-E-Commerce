@@ -1,6 +1,4 @@
-
-
-const db = require('../config/mySqlConfig.js');
+const db = require('../config/mysqlConfig.js');
 const logger = require('../config/logger.js');
 const query = require('../query/productQuery.js');
 
