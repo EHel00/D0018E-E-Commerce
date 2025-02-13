@@ -4,7 +4,7 @@ const QUERY = require("../query/userQuery");
 
 const getUsers = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching users`);
-    db.query(QUERY.SELECT_USERS, (error, results => {
+    db.query(QUERY.SELECT_USERS, (error, results) => {
         if(!results) {
             logger.error(error.message);
             res.status(404).send({message: "No users found"});
@@ -12,18 +12,18 @@ const getUsers = async(req, res) => {
             res.status(200).send({message: "Users found"}, results);
         }
         
-    }))
+    });
 };
 
 const createUser = async(req,res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating user`);
-    db.query(QUERY.CREATE_USER, (error, results => {
+    db.query(QUERY.CREATE_USER, (error, results) => {
         if(!results) {
             logger.error(error.message);
             res.status(400).send({message: "Error"});
         } else {
             res.status(201).send({message: "Created"});
         }
-    }))
+    });
 }
 module.exports = {getUsers, createUser};
