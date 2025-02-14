@@ -26,4 +26,16 @@ const createUser = async(req,res) => {
         }
     });
 }
-module.exports = {getUsers, createUser};
+
+const getUser = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching user`);
+    db.query(QUERY.SELECT_USER, [req.params.id], (error, results) => {
+        if(!results[0]) {
+            logger.error(error.message);
+            res.status(404).json({message: "User not found"});
+        } else {
+            res.status(200).json({message: "User found", data: results[0]});
+        }
+    });
+}
+module.exports = {getUsers, createUser, getUser};
