@@ -1,6 +1,15 @@
 const db = require("../config/mysqlConfig");
 const logger = require("../utility/logger");
 const QUERY = require("../query/userQuery");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
+
+
+const generateAccessToken = (userId) => {
+    return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
+  };
+
 
 const getUsers = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching users`);
@@ -38,4 +47,9 @@ const getUser = async(req, res) => {
         }
     });
 }
+
+const login = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, logging in user`);
+
+};
 module.exports = {getUsers, createUser, getUser};
