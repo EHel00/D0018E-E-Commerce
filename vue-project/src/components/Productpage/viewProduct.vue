@@ -2,7 +2,7 @@
     <div class="product-container">
       <div class="product-frame">
        
-        <h1 class="product-title">productName</h1>
+        <h1 class="product-title"></h1>
         <p class="product-description">This is a detailed description of the product.</p>
         <p class="product-price">$99.99</p>
       </div>
@@ -11,9 +11,7 @@
   </template>
   
   <script>
-  export default {
-    name: 'ViewProduct'
-  }
+
   </script>
   
   <style scoped>

@@ -10,6 +10,7 @@ const getProducts = (req, res) => {
             logger.error(error.message);
             res.status(404).json({message: 'Products not found'});
         } else {
+            logger.info(results);
             res.status(200).json({message: 'Products found', data: results});
     }
   });
