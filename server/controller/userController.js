@@ -1,6 +1,6 @@
 const db = require("../config/mysqlConfig");
 const logger = require("../utility/logger");
-const QUERY = require("../query/userQuery");
+const QUERY = require("../query/query");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -11,9 +11,9 @@ const generateAccessToken = (userId) => {
   };
 
 
-const getUsers = async(req, res) => {
+const getUsers = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching users`);
-    db.query(QUERY.SELECT_USERS, (error, results) => {
+    db.query(QUERY.selectUser, (error, results) => {
         if(!results) {
             logger.error(error.message);
             res.status(200).json({message: "No users found"});
@@ -24,9 +24,9 @@ const getUsers = async(req, res) => {
     });
 };
 
-const createUser = async(req,res) => {
+const createUser = (req,res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating user`);
-    db.query(QUERY.CREATE_USER, Object.values(req.body), (error, results) => {
+    db.query(QUERY.createUser, Object.values(req.body), (error, results) => {
         if(!results) {
             logger.error(error.message);
             res.status(400).json({message: "Error"});
@@ -36,9 +36,9 @@ const createUser = async(req,res) => {
     });
 }
 
-const getUser = async(req, res) => {
+const getUser = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching user`);
-    db.query(QUERY.SELECT_USER, [req.params.id], (error, results) => {
+    db.query(QUERY.selectUserById, [req.params.id], (error, results) => {
         if(!results[0]) {
             logger.error(error.message);
             res.status(404).json({message: "User not found"});

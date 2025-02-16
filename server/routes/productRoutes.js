@@ -4,9 +4,11 @@ const {
     getProduct,
     createCategory,
     createProduct,
-    increaseSupply,
+    updateSupply,
     getAllSupply,
-    getSupplyByProductId
+    getSupplyByProductId,
+    buyOne,
+    addOne
 }
 = require("../controller/productController");
 
@@ -17,11 +19,13 @@ router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 
 // supply
-router.post("/increaseSupply", increaseSupply);
+router.post("/updateSupply", updateSupply);
 
 router.get("/getAllSupply", getAllSupply);
 router.get("/getSupplyByProductId/:id", getSupplyByProductId);
 
+router.put("/buyOne/:id", buyOne);
+router.put("/addOne/:id", addOne);
 
 // category
 router.post("/createCategory", createCategory);
