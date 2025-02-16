@@ -8,7 +8,9 @@ const {
     getAllSupply,
     getSupplyByProductId,
     buyOne,
-    addOne
+    addOne,
+    getCategory,
+    getCategories
 }
 = require("../controller/productController");
 
@@ -18,6 +20,7 @@ const router = express.Router();
 router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 
+router.post("/createProduct", createProduct);
 // supply
 router.post("/updateSupply", updateSupply);
 
@@ -28,7 +31,10 @@ router.put("/buyOne/:id", buyOne);
 router.put("/addOne/:id", addOne);
 
 // category
+router.get("/getCategory/:id", getCategory);
+router.get("/getCategories", getCategories);
+
 router.post("/createCategory", createCategory);
-router.post("/createProduct", createProduct);
+
 
 module.exports = router;

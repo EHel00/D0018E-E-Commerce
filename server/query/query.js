@@ -13,6 +13,8 @@ const Query = {
 
     //Category Queries
     insertCategory: 'INSERT INTO Category (description, image) VALUES (?, ?)',
+    getCategory: 'SELECT * FROM Category WHERE CategoryID = ?',
+    getAllCategories: 'SELECT * FROM Category',
 
     //User Queries
     selectUser: 'SELECT * FROM User;',

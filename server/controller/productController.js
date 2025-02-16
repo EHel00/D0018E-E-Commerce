@@ -22,7 +22,6 @@ const getProduct = (req, res) => {
         if (!results[0]) {
             logger.error(error.message);
             res.status(404).json({message: 'Product not found'});
-
         } else {
         res.status(200).json({message: 'Product found', data: results[0]});
     }
@@ -40,6 +39,32 @@ const createCategory = (req, res) => {
         }
     });
 }
+
+const getCategories = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching Categorys`);
+    db.query(QUERY.getAllCategories, (error, results) => {
+        if (!results) {
+            logger.error(error.message);
+            res.status(404).json({message: 'Categorys not found'});
+        } else {
+            res.status(200).json({message: 'Categorys found', data: results});
+        }
+    });
+}
+
+const getCategory = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching Category`);
+    db.query(QUERY.getCategory, [req.params.id], (error, results) => {
+        if (!results[0]) {
+            logger.error(error.message);
+            res.status(404).json({message: 'Category not found'});
+        } else {
+            res.status(200).json({message: 'Category found', data: results[0]});
+        }
+    });
+}
+
+
 
 const createProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Product`);
@@ -164,4 +189,4 @@ const addOne = (req, res) => {
     });
 }
 
-module.exports = {getProducts, getProduct, createCategory, createProduct, updateSupply, getAllSupply, getSupplyByProductId, buyOne, addOne};
+module.exports = {getProducts, getProduct, createCategory, createProduct, updateSupply, getAllSupply, getSupplyByProductId, buyOne, addOne, getCategories, getCategory};
