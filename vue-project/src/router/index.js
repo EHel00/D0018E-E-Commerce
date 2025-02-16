@@ -30,7 +30,7 @@ const router = createRouter({
     component: Login
     },
     {
-      path: '/Store/:productName',
+      path: '/Store/product',
       name: 'viewProduct',
       component: viewProduct
     },
