@@ -20,17 +20,17 @@ const router = createRouter({
       component: Signup
     },
     {
-      path: '/Store',
+      path: '/store',
       name: 'Store',
       component: Store
     },
     {
-    path: '/Login',
+    path: '/login',
     name: 'Login',
     component: Login
     },
     {
-      path: '/Store/product',
+      path: '/store/product/:id',
       name: 'viewProduct',
       component: viewProduct
     },
