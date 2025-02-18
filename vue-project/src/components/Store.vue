@@ -2,55 +2,53 @@
   <div>
     <Navbar />
     <div class="store-container">
-      <div class="store-box" v-for="product in products" :key="product.id" @click="goToProduct(product.name)">
-        <p>{{ product. }}</p>
-        <p>{{ product.size }}</p>
-        <p>{{ product.price }}</p>
-        <button class="store-button">Buy Now</button>
-      </div>
+      <tr v-for="Category in Categories" :key="Category.id">
+        <RouterLink :to="{ name: 'viewProduct', params: { id: Category.id }}" class="view_product_button">
+        <td class="store-box">
+          <td> {{ Category.Description }}</td>
+          <td> {{ Category.Image }}</td>
+          <td>
+            
+              <button class="store-button">View Product</button>
+          </td>
+
+        </td>
+        </RouterLink>
+      </tr>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import Navbar from './Navbar.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import apiClient from '@/config/axios'
 
-export default {
-  name: 'Store',
-  components: {
-    Navbar
-  },
-  setup() {
-    const router = useRouter();
-    const products = ref([]);
 
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/product/getProducts');  
-        console.log(response);
+const router = useRouter();
+const Categories = ref([]);
+
+onMounted(async () => {
+    try {
+      const response = await apiClient.get('http://localhost:3000/api/product/getCategories'); 
+      console.log(response.data.data.length);
+      for(let i = 0; i < response.data.data.length; i++) {
+        let Category = {
+          id: response.data.data[i].id,
+          Description: response.data.data[i].Description,
+          Image: response.data.data[i].Image,
+        }
+        console.log(Category);
+        Categories.value.push(Category);
+        }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching categories:', error);
       }
-    };
-
-    onMounted(() => {
-      fetchProducts();
-      
     });
 
-    const goToProduct = (productName) => {
-      router.push({ name: 'viewProduct', params: { productName } });
-    };
 
-    return {
-      products,
-      goToProduct
-    };
-  }
-};
 </script>
 
 <style scoped>

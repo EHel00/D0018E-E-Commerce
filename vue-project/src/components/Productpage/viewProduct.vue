@@ -1,4 +1,5 @@
 <template>
+  <navbar/>
     <div class="product-container">
       <div class="product-frame">
        
@@ -10,8 +11,22 @@
     </div>
   </template>
   
-  <script>
+  <script setup>
+import Navbar from '../Navbar.vue';
+import { ref, onMounted } from 'vue';
+import apiClient from '@/config/axios';
+import { RouterLink, useRouter } from 'vue-router';
 
+onMounted(async () => {
+  try {
+    const response = await apiClient.get('http://localhost:3000/api/product/getProduct/');
+    console.log(response.data.data);
+ 
+  } catch (error) {
+    console.error('Error fetching product:', error);
+  }
+
+});
   </script>
   
   <style scoped>
