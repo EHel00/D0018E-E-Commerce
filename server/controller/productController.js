@@ -37,8 +37,6 @@ const getProduct = (req, res) => {
   });
 };
 
-
-
 const createCategory = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Category`);
     db.query(QUERY.insertCategory, Object.values(req.body), (error, results) => { 
@@ -73,7 +71,16 @@ const getCategory = (req, res) => {
     });
 }
 
-
+const getProductsInCategory = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching products in category`);
+    db.query(QUERY.getAllProductsInC, [req.params.id], (error, results) => {
+        if (!results) {
+            res.status(404).json({message: 'Products not found'});
+        } else {
+            res.status(200).json({message: 'Products found', data: results});
+        }
+    });
+}
 
 const createProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Product`);
@@ -206,4 +213,6 @@ module.exports = {
     addOne, 
     getCategories, 
     getCategory, 
-    getProductsByCategory};
+    getProductsByCategory,
+    getProductsInCategory,
+};
