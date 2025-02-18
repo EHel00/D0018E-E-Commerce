@@ -11,7 +11,8 @@ const {
     addOne,
     getCategory,
     getCategories,
-    getProductsByCategory
+    getProductsByCategory,
+    getProductsInCategory
 }
 = require("../controller/productController");
 
@@ -35,6 +36,7 @@ router.put("/addOne/:id", addOne);
 // category
 router.get("/getCategory/:id", getCategory);
 router.get("/getCategories", getCategories);
+router.get("/getProductsInCategory/:id", getProductsInCategory);
 
 router.post("/createCategory", createCategory);
 
