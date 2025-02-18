@@ -7,27 +7,37 @@ const getProducts = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching products`);
         db.query(QUERY.getAllProducts, (error, results) => {
         if (!results) {
-            logger.error(error.message);
             res.status(404).json({message: 'Products not found'});
         } else {
-            logger.info(results);
             res.status(200).json({message: 'Products found', data: results});
     }
   });
 };
 
+const getProductsByCategory = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching products`);
+        db.query(QUERY.getProductsByCategory, [req.params.id], (error, results) => {
+        if (!results) {
+            res.status(404).json({message: 'Products not found'});
+        } else {
+            logger.info(results[0]);
+            res.status(200).json({message: 'Products found', data: results});
+    }
+  });
+}
 
 const getProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching product`);
         db.query(QUERY.getProductById, [req.params.id], (error, results) => {
         if (!results[0]) {
-            logger.error(error.message);
             res.status(404).json({message: 'Product not found'});
         } else {
         res.status(200).json({message: 'Product found', data: results[0]});
     }
   });
 };
+
+
 
 const createCategory = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Category`);
@@ -45,7 +55,6 @@ const getCategories = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Categorys`);
     db.query(QUERY.getAllCategories, (error, results) => {
         if (!results) {
-            logger.error(error.message);
             res.status(404).json({message: 'Categorys not found'});
         } else {
             res.status(200).json({message: 'Categorys found', data: results});
@@ -57,7 +66,6 @@ const getCategory = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Category`);
     db.query(QUERY.getCategory, [req.params.id], (error, results) => {
         if (!results[0]) {
-            logger.error(error.message);
             res.status(404).json({message: 'Category not found'});
         } else {
             res.status(200).json({message: 'Category found', data: results[0]});
@@ -91,7 +99,6 @@ const getSupplyByProductId = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Supply`);
     db.query(QUERY.getSupplyByProductId, [req.params.id], (error, results) => {
         if (!results[0]) {
-            logger.error(error.message);
             res.status(404).json({message: 'Supply not found'});
         } else {
             res.status(200).json({message: 'Supply found', data: results[0]});
@@ -103,7 +110,6 @@ const getAllSupply = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Supply`);
     db.query(QUERY.getAllSupply, (error, results) => {
         if (!results) {
-            logger.error(error.message);
             res.status(404).json({message: 'Supply not found'});
         } else {
             res.status(200).json({message: 'Supply found', data: results});
@@ -148,7 +154,6 @@ const buyOne = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, searching Supply`);
     db.query(QUERY.getSupplyByProductId, [req.params.id], (error, results) => {
         if (!results[0]) {
-            logger.error(error.message);
             res.status(404).json({message: 'Supply not found'});
         } else {
             const quantity = results[0].Quantity;
@@ -173,7 +178,6 @@ const addOne = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, searching Supply`);
     db.query(QUERY.getSupplyByProductId, [req.params.id], (error, results) => {
         if (!results[0]) {
-            logger.error(error.message);
             res.status(404).json({message: 'Supply not found'});
         } else {
             const quantity = results[0].Quantity;
@@ -190,4 +194,16 @@ const addOne = (req, res) => {
     });
 }
 
-module.exports = {getProducts, getProduct, createCategory, createProduct, updateSupply, getAllSupply, getSupplyByProductId, buyOne, addOne, getCategories, getCategory};
+module.exports = {
+    getProducts, 
+    getProduct, 
+    createCategory, 
+    createProduct, 
+    updateSupply, 
+    getAllSupply, 
+    getSupplyByProductId, 
+    buyOne, 
+    addOne, 
+    getCategories, 
+    getCategory, 
+    getProductsByCategory};
