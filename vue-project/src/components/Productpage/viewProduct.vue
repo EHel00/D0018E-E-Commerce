@@ -15,12 +15,16 @@
 import Navbar from '../Navbar.vue';
 import { ref, onMounted } from 'vue';
 import apiClient from '@/config/axios';
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 
+const $route = useRoute();
 onMounted(async () => {
   try {
-    const response = await apiClient.get('http://localhost:3000/api/product/getProduct/');
-    console.log(response.data.data);
+    const id = $route.params.id;
+    console.log(id);
+    const response = await apiClient.get(`/product/getProduct/id=${id}`);
+    console.log(response);
+    
  
   } catch (error) {
     console.error('Error fetching product:', error);
