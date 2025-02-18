@@ -1,15 +1,15 @@
 <template>
   <navbar/>
-    <div class="product-container">
-      <div class="product-frame">
-       
-        <h1 class="product-title"></h1>
-        <p class="product-description">Size = {{productDetails.Size}}</p>
-        <p class="product-price">Price = {{ productDetails.Price }}</p>
-      </div>
+  <div class="product-container">
+    <div class="product-frame" v-for="product in Products" :key="product.id">
+      <h1 class="product-title">{{ product.Description }}</h1>
+      <p class="product-description">Size = {{ product.Size }}</p>
+      <p class="product-price">Price = {{ product.Price }}</p>
+      <img :src="product.Image" alt="Product Image" />
       <button class="add-to-cart-button">Add to Cart</button>
     </div>
-  </template>
+  </div>
+</template>
   
   <script setup>
 import Navbar from '../Navbar.vue';
@@ -19,24 +19,27 @@ import { RouterLink, useRoute } from 'vue-router';
 import { reactive } from 'vue';
 
 
-const productDetails = reactive({
-  Price: '',
-  Size: '',
-});
-//const product = ref({});
+
 const $route = useRoute();
+const Products = ref([]);
+
 onMounted(async () => {
   try {
     const id = $route.params.id;
     console.log(id);
-    const response = await apiClient.get(`/product/getProduct/${id}`);
+    const response = await apiClient.get(`/product/getProductsInCategory/${id}`);
     console.log(response.data.data);
-    // Description = response.data.data.Description;
-    // Image = response.data.data.Image;
-
-    productDetails.Price = response.data.data.Price;
-    productDetails.Size = response.data.data.Size;
-
+    for(let i = 0; i < response.data.data.length; i++) {
+      let product = {
+      Description: response.data.data[i].Description,
+      Image: response.data.data[i].Image,
+      Price:  response.data.data[i].Price,
+      Size:  response.data.data[i].Size,
+    };
+    console.log(product);
+    Products.value.push(product);
+    }
+   
  
   } catch (error) {
     console.error('Error fetching product:', error);
@@ -46,28 +49,32 @@ onMounted(async () => {
   </script>
   
   <style scoped>
-  .product-container {
+
+.product-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
   padding: 20px;
-  height: 100vh; /* Center the box vertically */
+  flex-wrap: nowrap; /* Ensure no wrapping */
 }
 
 .product-frame {
-  width: 90%;
-  max-width: 1000px; /* Make the box even larger */
+  width: 300px; /* Set a fixed width for the boxes */
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 50px; /* Increase padding for a larger box */
+  padding: 20px;
   background-color: #f9f9f9;
   text-align: center;
+  margin-top: 200px;
+  margin-bottom: 200px; /* Add margin to create space between boxes */
 }
 
+
 .product-title {
-  font-size: 2rem;
-  margin: 20px 0;
+  font-size: 1.5rem;
+  margin: 10px 0;
+  color: black;
 }
 
 .product-description {
@@ -84,7 +91,7 @@ onMounted(async () => {
 }
 
 .add-to-cart-button {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;

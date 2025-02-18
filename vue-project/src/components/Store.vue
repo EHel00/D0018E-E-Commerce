@@ -21,13 +21,12 @@
 
 <script setup>
 import Navbar from './Navbar.vue';
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import apiClient from '@/config/axios'
 
 
-const router = useRouter();
+
 const Categories = ref([]);
 
 onMounted(async () => {
