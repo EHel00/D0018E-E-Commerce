@@ -28,7 +28,7 @@ const getProductsByCategory = (req, res) => {
 
 const getProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching product`);
-        db.query(QUERY.getProductById, [req.query.id], (error, results) => {
+        db.query(QUERY.getProductById, [req.params.id], (error, results) => {
         if (!results[0]) {
             res.status(404).json({message: 'Product not found'});
         } else {
