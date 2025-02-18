@@ -32,11 +32,11 @@ const Categories = ref([]);
 
 onMounted(async () => {
     try {
-      const response = await apiClient.get('http://localhost:3000/api/product/getCategories'); 
+      const response = await apiClient.get(`/product/getCategories`); 
       console.log(response.data.data.length);
       for(let i = 0; i < response.data.data.length; i++) {
         let Category = {
-          id: response.data.data[i].id,
+          id: response.data.data[i].CategoryID,
           Description: response.data.data[i].Description,
           Image: response.data.data[i].Image,
         }
