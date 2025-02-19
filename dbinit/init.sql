@@ -25,29 +25,10 @@ DROP TABLE IF EXISTS `mydatabase`.`Category` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Category` (
   `CategoryID` INT NOT NULL AUTO_INCREMENT,
-  `Description` VARCHAR(255) NULL DEFAULT NULL,
+  `Description` VARCHAR(255) NOT NULL,
   `Image` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`CategoryID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `mydatabase`.`Product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`Product` ;
-
-CREATE TABLE IF NOT EXISTS `mydatabase`.`Product` (
-  `idProduct` INT NOT NULL AUTO_INCREMENT,
-  `Category` INT NULL DEFAULT NULL,
-  `Size` VARCHAR(45) NULL DEFAULT NULL,
-  `Price` DECIMAL(4,2) NULL DEFAULT NULL,
-  PRIMARY KEY (`idProduct`),
-  INDEX `Product_Category_FK_idx` (`Category` ASC) VISIBLE,
-  CONSTRAINT `Product_Category_FK`
-    FOREIGN KEY (`Category`)
-    REFERENCES `mydatabase`.`Category` (`CategoryID`))
+  PRIMARY KEY (`CategoryID`),
+  UNIQUE INDEX `Description_UNIQUE` (`Description` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -81,18 +62,38 @@ DROP TABLE IF EXISTS `mydatabase`.`Grade` ;
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Grade` (
   `idGrade` INT NOT NULL AUTO_INCREMENT,
   `User` INT NULL DEFAULT NULL,
-  `Product` INT NULL DEFAULT NULL,
+  `Category` INT NULL DEFAULT NULL,
   `Grade` INT NULL DEFAULT NULL,
   `Comment` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`idGrade`),
   INDEX `Grade_User_FK_idx` (`User` ASC) VISIBLE,
-  INDEX `Grade_Product_FK_idx` (`Product` ASC) VISIBLE,
-  CONSTRAINT `Grade_Product_FK`
-    FOREIGN KEY (`Product`)
-    REFERENCES `mydatabase`.`Product` (`idProduct`),
+  INDEX `Grade_Category_FK_idx` (`Category` ASC) VISIBLE,
+  CONSTRAINT `Grade_Category_FK`
+    FOREIGN KEY (`Category`)
+    REFERENCES `mydatabase`.`Category` (`CategoryID`),
   CONSTRAINT `Grade_User_FK`
     FOREIGN KEY (`User`)
     REFERENCES `mydatabase`.`User` (`idUser`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydatabase`.`Product`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydatabase`.`Product` ;
+
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Product` (
+  `idProduct` INT NOT NULL AUTO_INCREMENT,
+  `Category` INT NULL DEFAULT NULL,
+  `Size` INT NULL DEFAULT NULL,
+  `Price` DECIMAL(5,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`idProduct`),
+  INDEX `Product_Category_FK_idx` (`Category` ASC) VISIBLE,
+  CONSTRAINT `Product_Category_FK`
+    FOREIGN KEY (`Category`)
+    REFERENCES `mydatabase`.`Category` (`CategoryID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -144,13 +145,14 @@ DROP TABLE IF EXISTS `mydatabase`.`ShoppingCart` ;
 CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
   `idShoppingCart` INT NOT NULL AUTO_INCREMENT,
   `User` INT NULL DEFAULT NULL,
-  `Order` INT NULL DEFAULT NULL,
+  `Product` INT NULL DEFAULT NULL,
+  `Quantity` INT NULL,
   PRIMARY KEY (`idShoppingCart`),
-  INDEX `ShoppingCart_Order_FK_idx` (`Order` ASC) VISIBLE,
   INDEX `ShoppingCart_User_FK_idx` (`User` ASC) VISIBLE,
-  CONSTRAINT `ShoppingCart_Order_FK`
-    FOREIGN KEY (`Order`)
-    REFERENCES `mydatabase`.`Order` (`idOrder`),
+  INDEX `ShoppingCart_Productr_FK_idx` (`Product` ASC) VISIBLE,
+  CONSTRAINT `ShoppingCart_Productr_FK`
+    FOREIGN KEY (`Product`)
+    REFERENCES `mydatabase`.`Product` (`idProduct`),
   CONSTRAINT `ShoppingCart_User_FK`
     FOREIGN KEY (`User`)
     REFERENCES `mydatabase`.`User` (`idUser`))
@@ -169,6 +171,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Supply` (
   `Product` INT NULL DEFAULT NULL,
   `Quantity` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idSupply`),
+  UNIQUE INDEX `Product_UNIQUE` (`Product` ASC) VISIBLE,
   INDEX `Supply_Product_FK_idx` (`Product` ASC) VISIBLE,
   CONSTRAINT `Supply_Product_FK`
     FOREIGN KEY (`Product`)

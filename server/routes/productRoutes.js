@@ -14,6 +14,9 @@ const {
     getProductsByCategory,
     getProductsInCategory,
     createProductID,
+    addToCart,
+    getCart,
+    removeFromCart,
 }
 = require("../controller/productController");
 
@@ -41,5 +44,10 @@ router.get("/getProductsInCategory/:id", getProductsInCategory);
 
 router.post("/createCategory", createCategory);
 
+
+// shopping cart
+router.post("/addToCart", addToCart);
+router.get("/getCart", getCart);
+router.put("/removeFromCart", removeFromCart);
 
 module.exports = router;
