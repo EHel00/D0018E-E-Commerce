@@ -50,6 +50,20 @@ const getUser = (req, res) => {
 
 const login = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, logging in user`);
+    db.query(QUERY.selectUserByEmail, [req.body.Email], async(error, results) => {
+        logger.info(req.body.Password);
+        logger.info(results[0].Password);
+        if(!results[0]) {
+            res.status(404).json({message: "User not found3"});
+        } else {
+            if(await bcrypt.compare(req.body.Password, results[0].Password)) {
+                const token = generateAccessToken(results[0].idUser);
+                res.status(200).json({message: "User logged in", token: token});
+            } else {
+                res.status(401).json({message: "Invalid password"});
+            }
+        }
+    });
 
 };
-module.exports = {getUsers, createUser, getUser};
+module.exports = {getUsers, createUser, getUser, login};
