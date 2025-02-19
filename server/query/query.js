@@ -34,7 +34,7 @@ const Query = {
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
     updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
     removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
-
+    removeUserCart: 'DELETE FROM ShoppingCart WHERE User = ?',
 }
 
 

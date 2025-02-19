@@ -263,7 +263,19 @@ const removeFromCart = (req, res) => {
 
 const checkOut = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, checking out`);
-    
+    db.query(QUERY.getCartByUser, [req.body.User], (error, results) => {
+        if (!results) {
+            res.status(404).json({message: 'Cart not found'});
+        } else {
+            db.query(QUERY.checkOut, [req.body.User], (error, results) => {
+                if (results.affectedRows === 0) {
+                    res.status(404).json({message: 'Cart not found'});
+                } else {
+                    res.status(200).json({message: 'Checked out'});
+                }
+            })
+        }
+    })
 }
 
 module.exports = {
@@ -284,4 +296,5 @@ module.exports = {
     addToCart,
     getCart,
     removeFromCart,
+    checkOut,
 };

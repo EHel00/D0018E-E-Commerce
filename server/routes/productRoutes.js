@@ -17,6 +17,7 @@ const {
     addToCart,
     getCart,
     removeFromCart,
+    checkOut,
 }
 = require("../controller/productController");
 
@@ -49,5 +50,6 @@ router.post("/createCategory", createCategory);
 router.post("/addToCart", addToCart);
 router.get("/getCart", getCart);
 router.put("/removeFromCart", removeFromCart);
+router.post("/checkOut", checkOut);
 
 module.exports = router;
