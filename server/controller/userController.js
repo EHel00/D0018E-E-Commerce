@@ -31,12 +31,6 @@ const createUser = (req,res) => {
             logger.error(error.message);
             res.status(400).json({message: "Error"});
         } else {
-            // db.query(QUERY.createShoppingCart, [results.insertId, null], (error, results) => {
-            //     if(!results) {
-            //         logger.error(error.message);
-            //         res.status(400).json({message: "Error"});
-            //     }
-            // })
             res.status(201).json({message: "Created"});
         }
     });
