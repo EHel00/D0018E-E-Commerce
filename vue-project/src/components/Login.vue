@@ -2,24 +2,33 @@
     <div>
       <Navbar />
       <h1 id="header">Login</h1>
-      <div class="register">
-        <input type="text" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+      <form @submit.prevent="handleSubmit">
+
+        <input type="text" placeholder="Email" v-model="formData.Email" />
+        <input type="password" placeholder="Password" v-model="formData.password" />
 
         <button>Login</button>
-      </div>
+      </form>
     </div>
   </template>
   
-  <script>
+  <script setup>
  import Navbar from './Navbar.vue';
- 
-  export default {
-    name: 'Login',
-    components: {
-    Navbar
+import {reactive} from 'vue';
+
+const formData = reactive({
+  Email: '', 
+  password: '',
+});
+
+const handleSubmit = async () => {
+  try {
+    const response = await apiClient.post('/user/login', formData);
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error logging in:', error);
   }
-  }
+};
 
   </script>
   <style>
