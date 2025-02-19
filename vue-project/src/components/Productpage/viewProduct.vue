@@ -1,13 +1,15 @@
 <template>
   <navbar/>
   <div class="product-container">
-    <div class="product-frame" v-for="product in Products" :key="product.id">
-      <h1 class="product-title">{{ product.Description }}</h1>
-      <p class="product-description">Size = {{ product.Size }}</p>
-      <p class="product-price">Price = {{ product.Price }}</p>
-      <img :src="product.Image" alt="Product Image" />
-      <button class="add-to-cart-button">Add to Cart</button>
-    </div>
+    <form @submit.prevent="handleSubmit">
+      <div class="product-frame" v-for="product in Products" :key="product.id">
+        <h1 class="product-title">{{ product.Description }}</h1>
+        <p class="product-description">Size = {{ product.Size }}</p>
+        <p class="product-price">Price = {{ product.Price }}</p>
+        <img :src="product.Image" alt="Product Image" />
+        <button class="add-to-cart-button"  @click="Supply(product.id)" >Add to Cart</button>
+      </div>
+    </form>   
   </div>
 </template>
   
@@ -19,9 +21,19 @@ import { RouterLink, useRoute } from 'vue-router';
 import { reactive } from 'vue';
 
 
+const Supply = async (id) =>  {
+    try {
+      const response = await apiClient.put(`/product/buyOne/${id}`);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
 
 const $route = useRoute();
 const Products = ref([]);
+
+
 
 onMounted(async () => {
   try {
@@ -31,6 +43,7 @@ onMounted(async () => {
     console.log(response.data.data);
     for(let i = 0; i < response.data.data.length; i++) {
       let product = {
+      id: response.data.data[i].idProduct,
       Description: response.data.data[i].Description,
       Image: response.data.data[i].Image,
       Price:  response.data.data[i].Price,

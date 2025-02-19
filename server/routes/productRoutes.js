@@ -13,6 +13,7 @@ const {
     getCategories,
     getProductsByCategory,
     getProductsInCategory,
+    createProductID,
     addToCart,
     getCart,
     removeFromCart,
@@ -26,7 +27,7 @@ router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.get("/getProductsByCategory/:id", getProductsByCategory);
 router.post("/createProduct", createProduct);
-
+router.post("/createProduct/:id", createProductID);
 // supply
 router.post("/updateSupply", updateSupply);
 
