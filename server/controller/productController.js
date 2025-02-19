@@ -201,6 +201,51 @@ const addOne = (req, res) => {
     });
 }
 
+const addToCart = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, adding to cart`);
+    db.query(QUERY.updateValueInCart, [req.body.Quantity, req.body.User, req.body.Product], (error, results) => {
+        if (results.affectedRows === 0) {
+            db.query(QUERY.addToCart, [req.body.User, req.body.Product, req.body.Quantity], (error, results) => {
+                if (!results) {
+                    logger.error(error.message);
+                    res.status(400).json({message: 'Error'});
+                } else {
+                    res.status(200).json({message: 'Added to cart'});
+                }
+            })
+        } else {
+            res.status(201).json({message: 'Updated cart'});
+        }
+    })
+}
+
+const getCart = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
+    db.query(QUERY.findCartByUser, [req.body.User], (error, results) => {
+        if (!results) {
+            res.status(404).json({message: 'Cart not found'});
+        } else {
+            res.status(200).json({message: 'Cart found', data: results});
+        }
+    });
+}
+
+const removeFromCart = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, removing from cart`);
+    db.query(QUERY.removeFromCart, [req.body.User, req.body.Product], (error, results) => {
+        if (results.affectedRows === 0) {
+            res.status(404).json({message: 'Cart not found'});
+        } else {
+            res.status(200).json({message: 'Removed from cart'});
+        }
+    })
+}
+
+const checkOut = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, checking out`);
+    
+}
+
 module.exports = {
     getProducts, 
     getProduct, 
@@ -215,4 +260,7 @@ module.exports = {
     getCategory, 
     getProductsByCategory,
     getProductsInCategory,
+    addToCart,
+    getCart,
+    removeFromCart,
 };

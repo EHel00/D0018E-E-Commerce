@@ -29,7 +29,11 @@ const Query = {
     //Order Queries
 
     //Shopping Cart Queries
-    createShoppingCart: 'INSERT INTO ShoppingCart (User, Order) VALUES (?, ?)',
+    //createShoppingCart: 'INSERT INTO ShoppingCart (User) VALUES (?)',
+    findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
+    addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
+    updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
+    removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
 
 }
 
