@@ -1,6 +1,7 @@
 const db = require("../config/mysqlConfig");
 const logger = require("../utility/logger");
 const QUERY = require("../query/query");
+const { get } = require("http");
 
 
 const getProducts = (req, res) => {
@@ -85,6 +86,25 @@ const getProductsInCategory = (req, res) => {
 const createProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Product`);
     db.query(QUERY.insertProduct, Object.values(req.body), (error, results) => { 
+        if (!results) {
+            logger.error(error.message);
+            res.status(400).json({message: 'Error'});
+        } else {
+            db.query(QUERY.insertSupply, [results.insertId, 0], (error, results) => {
+                if (!results) {
+                    logger.error(error.message);
+                    res.status(400).json({message: 'Error'});
+                } else {
+                    res.status(201).json({message: 'Product Created'});
+                }           
+            })
+            
+        }
+    });
+}
+const createProductID = (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, creating Product`);
+    db.query(QUERY.insertProduct, [req.params.id, req.body.Size, req.body.Price], (error, results) => { 
         if (!results) {
             logger.error(error.message);
             res.status(400).json({message: 'Error'});
@@ -215,4 +235,5 @@ module.exports = {
     getCategory, 
     getProductsByCategory,
     getProductsInCategory,
+    createProductID,
 };

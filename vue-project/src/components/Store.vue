@@ -3,7 +3,7 @@
     <Navbar />
     <div class="store-container">
       <tr v-for="Category in Categories" :key="Category.id">
-        <RouterLink :to="{ name: 'viewProduct', params: { id: Category.id }}" class="view_product_button">
+        <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button">
         <td class="store-box">
           <td> {{ Category.Description }}</td>
           <td> {{ Category.Image }}</td>

@@ -3,6 +3,7 @@
     <div class="navbar-brand">MyStore</div>
     <ul class="navbar-nav">
       <div class="nav-links">
+        <RouterLink to="/admin" class="nav-link"> Admin</RouterLink>
         <RouterLink to="/" class="nav-link">Home</RouterLink>
         <RouterLink to="/store" class="nav-link">Store</RouterLink>
         <RouterLink to="/checkout" class="nav-link">Checkout</RouterLink>

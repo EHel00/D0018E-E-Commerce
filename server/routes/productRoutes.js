@@ -12,7 +12,8 @@ const {
     getCategory,
     getCategories,
     getProductsByCategory,
-    getProductsInCategory
+    getProductsInCategory,
+    createProductID,
 }
 = require("../controller/productController");
 
@@ -23,7 +24,7 @@ router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.get("/getProductsByCategory/:id", getProductsByCategory);
 router.post("/createProduct", createProduct);
-
+router.post("/createProduct/:id", createProductID);
 // supply
 router.post("/updateSupply", updateSupply);
 
