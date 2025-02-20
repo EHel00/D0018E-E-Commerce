@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 
 
 const generateAccessToken = (userId) => {
-    return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
   };
 
 
@@ -26,6 +26,8 @@ const getUsers = (req, res) => {
 
 const createUser = (req,res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating user`);
+    const hashedPassword = bcrypt.hashSync(req.body.Password, 10);
+    req.body.Password = hashedPassword;
     db.query(QUERY.createUser, Object.values(req.body), (error, results) => {
         if(!results) {
             logger.error(error.message);
@@ -51,8 +53,6 @@ const getUser = (req, res) => {
 const login = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, logging in user`);
     db.query(QUERY.selectUserByEmail, [req.body.Email], async(error, results) => {
-        logger.info(req.body.Password);
-        logger.info(results[0].Password);
         if(!results[0]) {
             res.status(404).json({message: "User not found3"});
         } else {
