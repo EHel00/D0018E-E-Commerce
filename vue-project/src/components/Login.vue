@@ -15,15 +15,23 @@
   <script setup>
  import Navbar from './Navbar.vue';
 import {reactive} from 'vue';
+import axios from 'axios';
+//import { jwtDecode} from 'jwt-decode';
 
 const formData = reactive({
   Email: '', 
-  password: '',
+  Password: '',
 });
 
 const handleSubmit = async () => {
+  const formCredentials = {
+    email: formData.Email,
+    password: formData.Password,
+  };
   try {
-    const response = await apiClient.post('/user/login', formData);
+    const response = await axios.post('/user/login', formCredentials, {withCredentials: true});
+
+    localStorage.setItem('token', response.data.token);
     console.log(response.data);
   } catch (error) {
     console.error('Error logging in:', error);
