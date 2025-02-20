@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Category` (
   PRIMARY KEY (`CategoryID`),
   UNIQUE INDEX `Description_UNIQUE` (`Description` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -50,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`User` (
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -80,6 +82,26 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
+-- Table `mydatabase`.`OrderHistory`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydatabase`.`OrderHistory` ;
+
+CREATE TABLE IF NOT EXISTS `mydatabase`.`OrderHistory` (
+  `idOrderHistory` INT NOT NULL AUTO_INCREMENT,
+  `User` INT NULL DEFAULT NULL,
+  `Date` DATETIME NULL,
+  `TotalPrice` DECIMAL(10,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`idOrderHistory`),
+  INDEX `OrderHistory_User_FK_idx` (`User` ASC) VISIBLE,
+  CONSTRAINT `OrderHistory_User_FK`
+    FOREIGN KEY (`User`)
+    REFERENCES `mydatabase`.`User` (`idUser`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
 -- Table `mydatabase`.`Product`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydatabase`.`Product` ;
@@ -95,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Product` (
     FOREIGN KEY (`Category`)
     REFERENCES `mydatabase`.`Category` (`CategoryID`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 34
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -106,10 +129,15 @@ DROP TABLE IF EXISTS `mydatabase`.`Order` ;
 
 CREATE TABLE IF NOT EXISTS `mydatabase`.`Order` (
   `idOrder` INT NOT NULL AUTO_INCREMENT,
+  `OrderHistory` INT NULL DEFAULT NULL,
   `Product` INT NULL DEFAULT NULL,
   `Quantity` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idOrder`),
   INDEX `Order_Product_FK_idx` (`Product` ASC) VISIBLE,
+  INDEX `Order_OrderHistory_FK_idx` (`OrderHistory` ASC) VISIBLE,
+  CONSTRAINT `Order_OrderHistory_FK`
+    FOREIGN KEY (`OrderHistory`)
+    REFERENCES `mydatabase`.`OrderHistory` (`idOrderHistory`),
   CONSTRAINT `Order_Product_FK`
     FOREIGN KEY (`Product`)
     REFERENCES `mydatabase`.`Product` (`idProduct`))
@@ -146,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
   `idShoppingCart` INT NOT NULL AUTO_INCREMENT,
   `User` INT NULL DEFAULT NULL,
   `Product` INT NULL DEFAULT NULL,
-  `Quantity` INT NULL,
+  `Quantity` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idShoppingCart`),
   INDEX `ShoppingCart_User_FK_idx` (`User` ASC) VISIBLE,
   INDEX `ShoppingCart_Productr_FK_idx` (`Product` ASC) VISIBLE,
@@ -157,6 +185,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
     FOREIGN KEY (`User`)
     REFERENCES `mydatabase`.`User` (`idUser`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -177,6 +206,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Supply` (
     FOREIGN KEY (`Product`)
     REFERENCES `mydatabase`.`Product` (`idProduct`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 34
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
