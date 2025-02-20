@@ -52,11 +52,14 @@ const getUser = (req, res) => {
 
 const login = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, logging in user`);
-    db.query(QUERY.selectUserByEmail, [req.body.Email], async(error, results) => {
+    db.query(QUERY.selectUserByEmail, [req.body.email], async(error, results) => {
         if(!results[0]) {
             res.status(404).json({message: "User not found3"});
         } else {
-            if(await bcrypt.compare(req.body.Password, results[0].Password)) {
+            logger.info(results[0].Password);
+            logger.info(req.body.password);
+            if(await bcrypt.compare(req.body.password, results[0].Password)) {
+                logger.info(req.body.email);
                 const token = generateAccessToken(results[0].idUser);
                 res.status(200).json({message: "User logged in", token: token});
             } else {
