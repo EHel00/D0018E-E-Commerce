@@ -277,6 +277,7 @@ const checkOut = (req, res) => {
         }
     })
 }
+// SELECT * FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = '2';
 
 module.exports = {
     getProducts, 
