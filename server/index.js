@@ -9,9 +9,10 @@ const app = express();
 const port = process.env.SERVER_PORT;
 
 app.use(express.json());
-
 app.use(cors({ 
-    origin :'*' // allow requests to server from port 5174
+   
+    credentials: true,
+    origin :'http://localhost:5173' // allow requests to server from port 5174
     }));
 
 app.use("/api/user", require("./routes/userRoutes"));
