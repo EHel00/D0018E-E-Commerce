@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Category` (
   PRIMARY KEY (`CategoryID`),
   UNIQUE INDEX `Description_UNIQUE` (`Description` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -43,7 +42,7 @@ DROP TABLE IF EXISTS `mydatabase`.`User` ;
 CREATE TABLE IF NOT EXISTS `mydatabase`.`User` (
   `idUser` INT NOT NULL AUTO_INCREMENT,
   `Email` VARCHAR(45) NULL DEFAULT NULL,
-  `Password` VARCHAR(45) NULL DEFAULT NULL,
+  `Password` VARCHAR(255) NULL DEFAULT NULL,
   `PhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
   `FirstName` VARCHAR(45) NULL DEFAULT NULL,
   `LastName` VARCHAR(45) NULL DEFAULT NULL,
@@ -51,7 +50,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`User` (
   PRIMARY KEY (`idUser`),
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -117,7 +115,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Product` (
     FOREIGN KEY (`Category`)
     REFERENCES `mydatabase`.`Category` (`CategoryID`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 34
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -185,7 +182,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`ShoppingCart` (
     FOREIGN KEY (`User`)
     REFERENCES `mydatabase`.`User` (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -206,7 +202,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`Supply` (
     FOREIGN KEY (`Product`)
     REFERENCES `mydatabase`.`Product` (`idProduct`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 34
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
