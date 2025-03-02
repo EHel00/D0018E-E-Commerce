@@ -2,6 +2,8 @@ const db = require("../config/mysqlConfig");
 const logger = require("../utility/logger");
 const QUERY = require("../query/query");
 const { get } = require("http");
+const mysql = require("mysql2/promise");
+const { error } = require("console");
 
 
 const getProducts = (req, res) => {
@@ -54,9 +56,9 @@ const getCategories = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Categorys`);
     db.query(QUERY.getAllCategories, (error, results) => {
         if (!results) {
-            res.status(404).json({message: 'Categorys not found'});
+            res.status(404).json({message: 'Categories not found'});
         } else {
-            res.status(200).json({message: 'Categorys found', data: results});
+            res.status(200).json({message: 'Categories found', data: results});
         }
     });
 }
@@ -261,23 +263,52 @@ const removeFromCart = (req, res) => {
     })
 }
 
-const checkOut = (req, res) => {
+
+const checkOut = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, checking out`);
-    db.query(QUERY.getCartByUser, [req.body.User], (error, results) => {
-        if (!results) {
-            res.status(404).json({message: 'Cart not found'});
-        } else {
-            db.query(QUERY.checkOut, [req.body.User], (error, results) => {
-                if (results.affectedRows === 0) {
-                    res.status(404).json({message: 'Cart not found'});
-                } else {
-                    res.status(200).json({message: 'Checked out'});
-                }
-            })
+    let con;
+    try {
+        // grab connection
+        con = await db.promise().getConnection();
+        // grab cart and supply
+        const results = await con.query(QUERY.getCartAndSupply, [req.body.User]);
+        const data = results[0];
+        if (data.length === 0) {
+            throw new Error('Cart is empty');
         }
-    })
+        // start of transaction
+        await con.beginTransaction();
+        // create order history
+        const result = await con.query(QUERY.createOrderHistory, [req.body.User, new Date(), "Pending"]);
+        const OrderHistory = result[0].insertId;
+        // loop over cart
+        for (let i = 0; i < data.length; i++) {
+            // check if there is enough supply
+            if (data[i].SupplyQuantity - data[i].CartQuantity < 0) {
+                throw new Error('Out of stock');
+            }
+            // update supply
+            await con.query(QUERY.updateSupply, [data[i].SupplyQuantity - data[i].CartQuantity, data[i].Product]);
+            // add to order table
+            await con.query(QUERY.addOrder, [OrderHistory, data[i].Product, data[i].CartQuantity]);
+            // remove from cart
+            await con.query(QUERY.removeFromCart, [req.body.User, data[i].Product]);
+        }
+        // sammla data under loop sedan kalla på en prisräknare
+        con.commit();
+        res.status(200).json({message: 'Checked out', data: results[0]});
+    } catch (error) {
+        await con.rollback();
+        logger.error(error.message);
+        res.status(400).json({message: error.message});
+    } finally {
+        if (con) {
+            con.release();
+        }
+    }
 }
-// SELECT * FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = '2';
+
+
 
 module.exports = {
     getProducts, 
