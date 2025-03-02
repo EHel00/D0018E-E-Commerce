@@ -10,7 +10,7 @@ const generateAccessToken = (userId) => {
     return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
   };
   const generateRefreshToken = (userId) => {
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "7d" });
+    return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
   };
 
 
@@ -43,9 +43,10 @@ const createUser = (req,res) => {
 
 const getUser = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching user`);
-    db.query(QUERY.selectUserById, [req.params.id], (error, results) => {
+    logger.info(req.userId)
+    db.query(QUERY.selectUserById, [req.userId], (error, results) => {
         if(!results[0]) {
-            logger.error(error.message);
+            
             res.status(404).json({message: "User not found"});
         } else {
             res.status(200).json({message: "User found", data: results[0]});

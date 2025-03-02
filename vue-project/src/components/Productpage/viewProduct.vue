@@ -23,7 +23,7 @@ import { reactive } from 'vue';
 const getUser = async () => {
   try {
     const response = await apiClient.get('/user/getUser');
-    getUser.id = response.data.data.id;
+    console.log(response)
   }catch{
 
   }
