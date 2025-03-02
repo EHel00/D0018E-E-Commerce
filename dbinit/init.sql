@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`OrderHistory` (
   `User` INT NULL DEFAULT NULL,
   `Date` DATETIME NULL,
   `TotalPrice` DECIMAL(10,2) NULL DEFAULT NULL,
+  `Status` VARCHAR(45) NULL, 
   PRIMARY KEY (`idOrderHistory`),
   INDEX `OrderHistory_User_FK_idx` (`User` ASC) VISIBLE,
   CONSTRAINT `OrderHistory_User_FK`
@@ -97,7 +98,6 @@ CREATE TABLE IF NOT EXISTS `mydatabase`.`OrderHistory` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
 
 -- -----------------------------------------------------
 -- Table `mydatabase`.`Product`
@@ -120,11 +120,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mydatabase`.`Order`
+-- Table `mydatabase`.`Orders`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydatabase`.`Order` ;
+DROP TABLE IF EXISTS `mydatabase`.`Orders` ;
 
-CREATE TABLE IF NOT EXISTS `mydatabase`.`Order` (
+CREATE TABLE IF NOT EXISTS `mydatabase`.`Orders` (
   `idOrder` INT NOT NULL AUTO_INCREMENT,
   `OrderHistory` INT NULL DEFAULT NULL,
   `Product` INT NULL DEFAULT NULL,

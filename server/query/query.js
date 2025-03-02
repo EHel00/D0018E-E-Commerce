@@ -1,3 +1,5 @@
+const { create } = require("domain");
+
 const Query = {
     //product
     getAllProducts: 'SELECT * FROM Product',
@@ -27,6 +29,12 @@ const Query = {
     selectUserByEmail: 'SELECT * FROM User WHERE Email = ?',
 
     //Order Queries
+    addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
+    createOrderHistory: 'INSERT INTO OrderHistory (User, Date, Status) VALUES (?, ?, ?)',
+    getOrderHistory: 'SELECT * FROM OrderHistory WHERE idOrderHistory = ?',
+    getOrderHistoryByUser: 'SELECT * FROM OrderHistory WHERE User = ?',
+
+
 
     //Shopping Cart Queries
     //createShoppingCart: 'INSERT INTO ShoppingCart (User) VALUES (?)',
@@ -35,6 +43,7 @@ const Query = {
     updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
     removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
     removeUserCart: 'DELETE FROM ShoppingCart WHERE User = ?',
+    getCartAndSupply: 'SELECT ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity, ShoppingCart.idShoppingCart, ShoppingCart.User, Supply.idSupply, ShoppingCart.Product FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = ?',
 }
 
 
