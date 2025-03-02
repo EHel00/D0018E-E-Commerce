@@ -9,6 +9,9 @@ const bcrypt = require("bcryptjs");
 const generateAccessToken = (userId) => {
     return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
   };
+  const generateRefreshToken = (userId) => {
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "7d" });
+  };
 
 
 const getUsers = (req, res) => {
@@ -60,8 +63,12 @@ const login = async(req, res) => {
             logger.info(req.body.password);
             if(await bcrypt.compare(req.body.password, results[0].Password)) {
                 logger.info(req.body.email);
-                const token = generateAccessToken(results[0].idUser);
-                res.status(200).json({message: "User logged in", token: token});
+                const accessToken = generateAccessToken(results[0].idUser);
+                const refreshToken = generateRefreshToken(results[0].idUser)
+                res.cookie('jwt', refreshToken, { domain: 'localhost', path: '/', httpOnly:true, secure:true, sameSite: 'strict',
+                    maxAge:7*24*60*60*1000
+                })
+                res.status(200).json({message: "User logged in", accessToken: accessToken});
             } else {
                 res.status(401).json({message: "Invalid password"});
             }
@@ -69,4 +76,9 @@ const login = async(req, res) => {
     });
 
 };
-module.exports = {getUsers, createUser, getUser, login};
+
+const logout = (async(req, res) => {
+    res.clearCookie('jwt');
+    res.status(200).json({message: "You're logged out"});
+});
+module.exports = {getUsers, createUser, getUser, login, logout};

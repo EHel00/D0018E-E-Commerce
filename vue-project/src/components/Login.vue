@@ -17,8 +17,9 @@
 import {reactive} from 'vue';
 import axios from 'axios';
 import router from '@/router';
+import {jwtDecode} from "jwt-decode";
 //import apiClient from '@/config/axios';
-//import { jwtDecode} from 'jwt-decode';
+
 
 const formData = reactive({
   Email: '', 
@@ -32,6 +33,11 @@ const handleSubmit = async () => {
   };
   try {
     const response = await axios.post('http://localhost:3000/api/user/login', formCredentials, {withCredentials: true});
+
+    localStorage.setItem('accessToken', response.data.accessToken);
+
+    //const decodedToken = jwtDecode(response.data.accesstoken)
+
     console.log(response.data);
     router.push({ name: 'Store' });
   } catch (error) {

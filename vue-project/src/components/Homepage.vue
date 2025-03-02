@@ -10,15 +10,10 @@
   
 <script setup>
 
-import apiClient from '@/config/axios';
+//import apiClient from '@/config/axios';
 import Navbar from './Navbar.vue';
-import { onMounted} from 'vue';
+//import { onMounted} from 'vue';
 
-onMounted(async () => {
-    const response = await apiClient.get('/user/test');
-    console.log(response.data.message);
-    }
-);
 
 </script>
   <style>
