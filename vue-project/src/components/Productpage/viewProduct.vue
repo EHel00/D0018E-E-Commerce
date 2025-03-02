@@ -7,7 +7,7 @@
         <p class="product-description">Size = {{ product.Size }}</p>
         <p class="product-price">Price = {{ product.Price }}</p>
         <img :src="product.Image" alt="Product Image" />
-        <button class="add-to-cart-button"  @click="Supply(product.id)" >Add to Cart</button>
+        <button type="submit" >Add to Cart</button>
       </div>
     </form>   
   </div>
@@ -20,11 +20,25 @@ import apiClient from '@/config/axios';
 import { RouterLink, useRoute } from 'vue-router';
 import { reactive } from 'vue';
 
+const getUser = async () => {
+  try {
+    const response = await apiClient.get('/user/getUser');
+    getUser.id = response.data.data.id;
+  }catch{
 
-const Supply = async (id) =>  {
+  }
+};
+// const formData = reactive ({
+
+
+// });
+
+const handleSubmit = async (id) =>  {
     try {
-      const response = await apiClient.put(`/product/buyOne/${id}`);
-      console.log(response.data.data);
+      getUser();
+      // const cart = await apiClient.post(`/product/addToCart/`, );
+      // localStorage.setItem('addedtoCart',JSON.stringify);
+      // console.log(response.data.data);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }

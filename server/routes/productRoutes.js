@@ -47,7 +47,7 @@ router.post("/createCategory", createCategory);
 
 
 // shopping cart
-router.post("/addToCart", addToCart);
+router.post("/addToCart/:id", addToCart);
 router.get("/getCart", getCart);
 router.put("/removeFromCart", removeFromCart);
 router.post("/checkOut", checkOut);

@@ -6,40 +6,22 @@
         <RouterLink to="/admin" class="nav-link"> Admin</RouterLink>
         <RouterLink to="/" class="nav-link">Home</RouterLink>
         <RouterLink to="/store" class="nav-link">Store</RouterLink>
-        <RouterLink to="/checkout" class="nav-link">Checkout</RouterLink>
-        <div v-if="!LoggedIn">
+        <RouterLink to="/store/checkout/:id" class="nav-link">Checkout</RouterLink>
+        <div>
           <RouterLink to="/login" class="nav-link">Login</RouterLink>
           <RouterLink to="/signup" class="nav-link">Sign Up</RouterLink>
         </div>
-        <div v-else>
-          <button @click="logout" class="nav-link">Logout</button>
+          <Logout />
           <RouterLink to="/profile" class="nav-link">Profile</RouterLink>
         </div>
-      </div>
     </ul>
   </nav>
 </template>
 
-<script>
+<script setup>
 import { RouterLink } from 'vue-router';
+import Logout from './Logout.vue';
 
-export default {
-  name: 'Navbar',
-  components: {
-    RouterLink
-  },
-  data() {
-    return {
-      LoggedIn: false // Replace with actual login state
-    };
-  },
-  methods: {
-    logout() {
-      // Implement logout functionality
-      this.LoggedIn = false;
-    }
-  }
-}
 </script>
 
 <style scoped>

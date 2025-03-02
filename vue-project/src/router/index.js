@@ -7,6 +7,7 @@ import viewProduct from '@/components/Productpage/viewProduct.vue';
 import userProfile from '@/components/userProfile.vue';
 import Adminpage from '@/components/Adminpage.vue';
 import viewadminProduct from '@/components/viewadminProduct.vue';
+import Checkoutpage from '@/components/Checkoutpage.vue'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -51,8 +52,15 @@ const router = createRouter({
       name: 'viewadminProduct',
       component: viewadminProduct
     },
+    { 
+      path: '/store/checkout/:id',
+      name: 'Checkout',
+      component: Checkoutpage
+    }
 
   ]
 });
+
+export const isAuthenticated = () => !!localStorage.getItem('accessToken');
 
 export default router;
