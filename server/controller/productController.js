@@ -255,22 +255,6 @@ const addToCart = async (req, res) => {
         await con.release();
     }
 
-    db.query(QUERY.updateValueInCart, [req.body.Quantity, req.body.User, req.body.Product], (error, results) => {
-        if (results.affectedRows === 0) {
-            db.query(QUERY.addToCart, [req.body.User, req.body.Product, req.body.Quantity], (error, results) => {
-                if (!results) {
-                    logger.error(error.message);
-                    res.status(400).json({message: 'Error'});
-                } else {
-                    res.status(200).json({message: 'Added to cart'});
-                }
-            })
-        } else {
-            res.status(201).json({message: 'Updated cart'});
-        }
-    })
-}
-
 const getCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
     db.query(QUERY.findCartByUser, [req.userId], (error, results) => {

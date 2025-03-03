@@ -1,15 +1,13 @@
 <template>
   <navbar/>
   <div class="product-container">
-    <form @submit.prevent="handleSubmit">
       <div class="product-frame" v-for="product in Products" :key="product.id">
         <h1 class="product-title">{{ product.Description }}</h1>
         <p class="product-description">Size = {{ product.Size }}</p>
         <p class="product-price">Price = {{ product.Price }}</p>
         <img :src="product.Image" alt="Product Image" />
-        <button type="submit" >Add to Cart</button>
-      </div>
-    </form>   
+        <button @click="handleSubmit(product)" >Add to Cart</button>
+      </div>  
   </div>
 </template>
   
@@ -20,29 +18,22 @@ import apiClient from '@/config/axios';
 import { RouterLink, useRoute } from 'vue-router';
 import { reactive } from 'vue';
 
-const getUser = async () => {
-  try {
-    const response = await apiClient.get('/user/getUser');
-    console.log(response.data.data.idUser)
-  }catch{
-
-  }
-};
 
 const orderData = reactive ({    
     
   });
 
-const handleSubmit = async (id) =>  {
+const handleSubmit = async (product) =>  {
     try {
-      getUser();
-      console.log(id);
-      // const cartData = {
-      //   id: 
-      // }
-      // const cart = await apiClient.post(`/product/addToCart/`, );
-      // localStorage.setItem('addedtoCart',JSON.stringify);
-      // console.log(response.data.data);
+      
+      console.log(product.id);
+      const cartData = {
+        Product: product.id,
+        Quantity: '1',
+      };
+      const cart = await apiClient.post(`/product/addToCart/`, cartData);
+      localStorage.setItem('addedtoCart',JSON.stringify);
+      console.log(cart);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
