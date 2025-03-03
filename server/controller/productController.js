@@ -225,11 +225,14 @@ const addToCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, adding to cart`);
     let con;
     try {
-        con = await db.getConnection();
+        con = await db.promise().getConnection();
         await con.beginTransaction();
-        const result = await con.query(QUERY.findProdInCartByUser, [req.body.User]);
+        const result = await con.query(QUERY.findProdInCartByUser, [req.userId]);
         const data = result[0];
         logger.info(data);
+        logger.info(data.length)
+        logger.info(data[0])
+        logger.info(data[0].Product)
         if (data.length == 0) {
             await con.query(QUERY.addToCart, [req.userId, req.body.Product, req.body.Quantity]);
         } else {
@@ -248,13 +251,17 @@ const addToCart = async (req, res) => {
         await con.commit();
         res.status(200).json({message: 'Added to cart'});
     } catch (error) {
+        if(con){
         await con.rollback();
+    }
         logger.error(error.message);
         res.status(400).json({message: 'Error'});
     } finally {
-        await con.release();
+        if(con) {
+            await con.release();
+        }
     }
-
+}
 const getCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
     db.query(QUERY.findCartByUser, [req.userId], (error, results) => {
