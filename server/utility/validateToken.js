@@ -6,7 +6,7 @@ const validateToken = async(req, res, next) => {
    
     let token;
     let authHeader =  req.headers.Authorization || req.headers.authorization;  
-
+    
     console.log(authHeader);
     if(authHeader && authHeader.startsWith("Bearer")) { // The Authorization header starts with "Bearer"
         token = authHeader.split(" ")[1]; // The token is the second part of the header

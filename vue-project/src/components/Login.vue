@@ -32,8 +32,9 @@ const handleSubmit = async () => {
     password: formData.Password,
   };
   try {
-    const response = await axios.post('http://localhost:3000/api/user/login', formCredentials, {withCredentials: true});
 
+    const response = await axios.post('http://localhost:3000/api/user/login', formCredentials, {withCredentials: true});
+    
     localStorage.setItem('accessToken', response.data.accessToken);
 
     //const decodedToken = jwtDecode(response.data.accesstoken)
