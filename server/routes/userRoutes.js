@@ -11,11 +11,12 @@ const {
 const router = express.Router();
 
 
-router.get("/getUsers", getUsers);
+router.get("/getUsers", validateToken, getUsers);
 
 router.post("/createUser", createUser);
 router.get("/getUser", validateToken,getUser);
 
 router.post("/login", login);
 router.post("/logout", logout);
+
 module.exports = router;

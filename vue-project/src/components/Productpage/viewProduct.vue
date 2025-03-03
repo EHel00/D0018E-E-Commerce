@@ -23,19 +23,23 @@ import { reactive } from 'vue';
 const getUser = async () => {
   try {
     const response = await apiClient.get('/user/getUser');
-    console.log(response)
+    console.log(response.data.data.idUser)
   }catch{
 
   }
 };
-// const formData = reactive ({
 
-
-// });
+const orderData = reactive ({    
+    
+  });
 
 const handleSubmit = async (id) =>  {
     try {
       getUser();
+      console.log(id);
+      // const cartData = {
+      //   id: 
+      // }
       // const cart = await apiClient.post(`/product/addToCart/`, );
       // localStorage.setItem('addedtoCart',JSON.stringify);
       // console.log(response.data.data);

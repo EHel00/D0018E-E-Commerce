@@ -9,9 +9,9 @@ const bcrypt = require("bcryptjs");
 const generateAccessToken = (userId) => {
     return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
   };
-  const generateRefreshToken = (userId) => {
-    return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
-  };
+//   const generateRefreshToken = (userId) => {
+//     return jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+//   };
 
 
 const getUsers = (req, res) => {
@@ -65,10 +65,10 @@ const login = async(req, res) => {
             if(await bcrypt.compare(req.body.password, results[0].Password)) {
                 logger.info(req.body.email);
                 const accessToken = generateAccessToken(results[0].idUser);
-                const refreshToken = generateRefreshToken(results[0].idUser)
-                res.cookie('jwt', refreshToken, { domain: 'localhost', path: '/', httpOnly:true, secure:true, sameSite: 'strict',
-                    maxAge:7*24*60*60*1000
-                })
+                //const refreshToken = generateRefreshToken(results[0].idUser)
+                // res.cookie('jwt', refreshToken, { domain: 'localhost', path: '/', httpOnly:true, secure:true, sameSite: 'strict',
+                //     maxAge:7*24*60*60*1000
+                // })
                 res.status(200).json({message: "User logged in", accessToken: accessToken});
             } else {
                 res.status(401).json({message: "Invalid password"});
@@ -77,6 +77,29 @@ const login = async(req, res) => {
     });
 
 };
+
+// const refreshToken = asyncHandler(async (req,res) => {
+//     if (req.cookies?.jwt) { // If the cookie is not present it will return undefined/null
+//         // Getting refreshToken from cookie
+//         const refreshToken = req.cookies.jwt;
+//         // Verify the refresh token
+//         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
+//             (err, decoded) => {
+//                 if (err) {
+//                     // Wrong Refesh Token
+//                     return res.status(406).json({ message: 'Unauthorized' });
+//                 }
+//                 else {
+//                     // Correct refresh token so we create a new access token
+//                     generateAccessToken()
+
+//                     return res.status(200).json({ accessToken });
+//                 }
+//             })
+//     } else { // If the cookie is not present
+//         return res.status(406).json({ message: 'Unauthorized -> Redirect to login' });
+//     }
+// } )
 
 const logout = (async(req, res) => {
     res.clearCookie('jwt');
