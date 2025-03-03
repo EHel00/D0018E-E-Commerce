@@ -18,6 +18,8 @@ const {
     getCart,
     removeFromCart,
     checkOut,
+    addGrade,
+    getGrades,
 }
 = require("../controller/productController");
 const validateToken = require("../utility/validateToken");
@@ -51,7 +53,11 @@ router.post("/createCategory", createCategory);
 router.post("/addToCart", validateToken, addToCart);
 router.get("/getCart", validateToken, getCart);
 
-router.put("/removeFromCart", removeFromCart);
-router.post("/checkOut", checkOut);
+router.put("/removeFromCart", validateToken, removeFromCart);
+router.post("/checkOut", validateToken, checkOut);
 
+
+// grade
+router.post("/addReview/:id", validateToken, addGrade);
+router.get("/getReviews/:id", getGrades);
 module.exports = router;
