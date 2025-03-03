@@ -2,9 +2,20 @@
     <div>
         <Navbar />
         <div>
-            <tbody v-for="product in products" :key="product.id">
-                <h1>Checkout</h1>
+            <h1 id="checkout">Checkout</h1>
+            <tbody id="body" v-for="product in products" :key="product.User">
+                <tr>
+                    <td id="td"> Product:{{ product.chocolate }}</td>
+                    <td id="td"> Quantity:{{ product.Quantity }}</td>
+
+                </tr>
+                    <button>-</button>
+                    <button>+</button>
             </tbody>
+            <div id="Buy">        
+                <button @click ="handleSubmit()" >Checkout</button>
+            </div>
+
         </div>
 
     </div>
@@ -25,17 +36,22 @@ const products = ref([])
 const getCart = async () => {
     const response = await apiClient.get(`/product/getCart`);
     console.log(response.data.data)
-    products = response.data.data
-    
-}
-onMounted(async () => {
-    await getCart();
-    for(let i = 0; i < products.value.length; i++ ) {
+    for(let i = 0; i < response.data.data.length; i++ ) {
         let product ={
-            chocolate: response.data.data[i].product,
+            id: response.data.data[i].User,
+            chocolate: response.data.data[i].Product,
             Quantity: response.data.data[i].Quantity
         }
+        console.log(product)
+        products.value.push(product);
     }
+    //products = response.data;
+    
+}
+//const handleSubmit = async ()
+onMounted(async () => {
+    await getCart();
+    
 
 });
 
@@ -43,6 +59,19 @@ onMounted(async () => {
 
 
 <style>
+#checkout{
+    font-Size: 50px
+    
+}
+#td {
+    padding: 1rem;
+    font-size: 30px;
 
+
+}
+#buy{
+    
+    margin-left: 200px;
+}
 
 </style>
