@@ -4,7 +4,8 @@ const Query = {
     //product
     getAllProducts: 'SELECT * FROM Product',
     getProductById: 'SELECT * FROM Product WHERE idProduct = ?',
-    insertProduct: 'INSERT INTO Product(Category, Size, Price) VALUES (?, ?, ?)', 
+    getProductPrice: 'SELECT Product.Price FROM Product WHERE idProduct = ?',
+    insertProduct: 'INSERT INTO Product(Category, Size, Price) VALUES (?, ?, ?)',
     //updateProduct: 'UPDATE Product (Category, Size, Price) WHERE idProduct = ?',
     deleteProduct: 'DELETE FROM Product WHERE id = ?',
     getProductsByCategory: 'SELECT * FROM Product WHERE Category = ?',
@@ -30,15 +31,17 @@ const Query = {
 
     //Order Queries
     addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
+
     createOrderHistory: 'INSERT INTO OrderHistory (User, Date, Status) VALUES (?, ?, ?)',
     getOrderHistory: 'SELECT * FROM OrderHistory WHERE idOrderHistory = ?',
     getOrderHistoryByUser: 'SELECT * FROM OrderHistory WHERE User = ?',
+    updateOrderHistoryTotal: 'UPDATE OrderHistory set TotalPrice = ? WHERE idOrderHistory = ?',
 
 
 
     //Shopping Cart Queries
-    //createShoppingCart: 'INSERT INTO ShoppingCart (User) VALUES (?)',
     findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
+    findProdInCartByUser: 'SELECT Product FROM ShoppingCart WHERE User = ?',
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
     updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
     removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
