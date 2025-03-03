@@ -15,16 +15,19 @@
 
 <script setup>
 import Navbar from './Navbar.vue';
+import { onMounted } from 'vue';
+onMounted(async () => {
+    try{
+        const response = await apiClient.get(`/product/getCart`);
+        console.log(response)
+        Product = response.data.data.Product;
+        Quantity = response.data.data.Quantity
 
-// onMounted(async () => {
-//     try{
-//         const cart = await apiClient.get(`/product/getCart`, id);
+    }catch{
 
-//     }catch{
+    }
 
-//     }
-
-// });
+});
 
 </script>
 

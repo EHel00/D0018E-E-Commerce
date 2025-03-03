@@ -20,6 +20,7 @@ const {
     checkOut,
 }
 = require("../controller/productController");
+const validateToken = require("../utility/validateToken");
 
 const router = express.Router();
 
@@ -47,8 +48,8 @@ router.post("/createCategory", createCategory);
 
 
 // shopping cart
-router.post("/addToCart/:id", addToCart);
-router.get("/getCart", getCart);
+router.post("/addToCart/",validateToken, addToCart);
+router.get("/getCart",validateToken, getCart);
 router.put("/removeFromCart", removeFromCart);
 router.post("/checkOut", checkOut);
 

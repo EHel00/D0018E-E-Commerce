@@ -225,9 +225,11 @@ const addOne = (req, res) => {
 
 const addToCart = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, adding to cart`);
-    db.query(QUERY.updateValueInCart, [req.body.Quantity, req.body.User, req.body.Product], (error, results) => {
+    logger.info(req.userId)
+    db.query(QUERY.updateValueInCart, [req.body.Quantity, req.userId, req.body.Product], (error, results) => {
+        
         if (results.affectedRows === 0) {
-            db.query(QUERY.addToCart, [req.body.User, req.body.Product, req.body.Quantity], (error, results) => {
+            db.query(QUERY.addToCart, [req.userId, req.body.Product, req.body.Quantity], (error, results) => {
                 if (!results) {
                     logger.error(error.message);
                     res.status(400).json({message: 'Error'});
@@ -243,7 +245,7 @@ const addToCart = (req, res) => {
 
 const getCart = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
-    db.query(QUERY.findCartByUser, [req.body.User], (error, results) => {
+    db.query(QUERY.findCartByUser, [req.userId], (error, results) => {
         if (!results) {
             res.status(404).json({message: 'Cart not found'});
         } else {
