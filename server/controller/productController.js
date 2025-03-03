@@ -271,11 +271,8 @@ const getCart = async (req, res) => {
         data = result[0];
         let price = [];
         let total = 0;
-        logger.info("2");
-        logger.info(typeof data[0].Price);
-        logger.info(typeof data[0].Quantity);
         for (let i = 0; i < data.length; i++) {
-            logger.info(data[i]);
+            
             total += parseInt(data[i].Price) * parseInt(data[i].Quantity);
             price.push(parseInt(data[i].Price)* data[i].Quantity);
         }
@@ -294,13 +291,24 @@ const getCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, removing from cart`);
-    await db.query(QUERY.removeFromCart, [req.userId, req.body.Product], (error, results) => {
-        if (results.affectedRows === 0) {
-            res.status(404).json({message: 'Cart not found'});
-        } else {
-            res.status(200).json({message: 'Removed from cart'});
+    let con;
+    logger.info(req.body.Product)
+    try {
+        con = await db.promise().getConnection();
+        await con.query(QUERY.removeFromCart, [req.userId, req.body.Product])
+        res.status(200).json({message: 'product removed' })
+
+    }catch (error) {
+        logger.error(error);
+        res.status(400).json({message: 'Error'});
+        
+
+    }
+    finally{
+        if(con){
+            await con.release();
         }
-    })
+    }
 }
 
 
