@@ -255,7 +255,6 @@ const addToCart = async (req, res) => {
         logger.error(error.message);
         res.status(400).json({message: 'Error'});
     } finally {
-
         if(con) {
             await con.release();
         }
@@ -264,31 +263,33 @@ const addToCart = async (req, res) => {
 
 const getCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
-    db.query(QUERY.findCartByUser, [req.userId], (error, results) => {
-        if (!results) {
-            res.status(404).json({message: 'Cart not found'});
-        } else {
-            res.status(200).json({message: 'Cart found', data: results});
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        logger.info("1");
+        const result = await con.query(QUERY.fancyGetCart, [req.userId]);
+        data = result[0];
+        let price = [];
+        let total = 0;
+        logger.info("2");
+        logger.info(typeof data[0].Price);
+        logger.info(typeof data[0].Quantity);
+        for (let i = 0; i < data.length; i++) {
+            logger.info(data[i]);
+            total += parseInt(data[i].Price) * parseInt(data[i].Quantity);
+            price.push(parseInt(data[i].Price)* data[i].Quantity);
         }
-    });
-
-    // logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
-    // let con;
-    // let price = [];
-    // try {
-    //     con = await db.promise().getConnection();
-    //     const results = await con.query(QUERY.findCartByUser, [req.userId]);
-    //     const data = results[0];
-    //     logger.info(data[0].User);
-    //     res.status(200).json({message: 'Cart found', data: results[0]});
-    // } catch (error) {
-    //     res.status(400).json({message: error.message});
-    // } finally {
-    //     if (con) {
-    //         await con.release();
-    //     }
-    // }
-    
+        logger.info(price);
+        logger.info(total);
+        res.status(200).json({message: 'Cart found', data: result[0], total: total, price: price});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if(con) {
+            await con.release();
+        }
+    }
 }
 
 const removeFromCart = async (req, res) => {
