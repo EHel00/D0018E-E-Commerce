@@ -1,9 +1,7 @@
 const db = require("../config/mysqlConfig");
 const logger = require("../utility/logger");
 const QUERY = require("../query/query");
-const { get } = require("http");
 const mysql = require("mysql2/promise");
-const { error } = require("console");
 
 
 const getProducts = (req, res) => {
@@ -223,8 +221,40 @@ const addOne = (req, res) => {
     });
 }
 
-const addToCart = (req, res) => {
+const addToCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, adding to cart`);
+    let con;
+    try {
+        con = await db.getConnection();
+        await con.beginTransaction();
+        const result = await con.query(QUERY.findProdInCartByUser, [req.body.User]);
+        const data = result[0];
+        logger.info(data);
+        if (data.length == 0) {
+            await con.query(QUERY.addToCart, [req.userId, req.body.Product, req.body.Quantity]);
+        } else {
+            let flag = false;
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].Product == req.body.Product) {
+                    await con.query(QUERY.updateValueInCart, [req.body.Quantity, req.userId, req.body.Product]);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                await con.query(QUERY.addToCart, [req.userId, req.body.Product, req.body.Quantity]);
+            }
+        }
+        await con.commit();
+        res.status(200).json({message: 'Added to cart'});
+    } catch (error) {
+        await con.rollback();
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        await con.release();
+    }
+
     db.query(QUERY.updateValueInCart, [req.body.Quantity, req.body.User, req.body.Product], (error, results) => {
         if (results.affectedRows === 0) {
             db.query(QUERY.addToCart, [req.body.User, req.body.Product, req.body.Quantity], (error, results) => {
@@ -241,20 +271,38 @@ const addToCart = (req, res) => {
     })
 }
 
-const getCart = (req, res) => {
+const getCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
-    db.query(QUERY.findCartByUser, [req.body.User], (error, results) => {
+    db.query(QUERY.findCartByUser, [req.userId], (error, results) => {
         if (!results) {
             res.status(404).json({message: 'Cart not found'});
         } else {
             res.status(200).json({message: 'Cart found', data: results});
         }
     });
+
+    // logger.info(`${req.method} ${req.originalUrl}, fetching cart`);
+    // let con;
+    // let price = [];
+    // try {
+    //     con = await db.promise().getConnection();
+    //     const results = await con.query(QUERY.findCartByUser, [req.userId]);
+    //     const data = results[0];
+    //     logger.info(data[0].User);
+    //     res.status(200).json({message: 'Cart found', data: results[0]});
+    // } catch (error) {
+    //     res.status(400).json({message: error.message});
+    // } finally {
+    //     if (con) {
+    //         await con.release();
+    //     }
+    // }
+    
 }
 
-const removeFromCart = (req, res) => {
+const removeFromCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, removing from cart`);
-    db.query(QUERY.removeFromCart, [req.body.User, req.body.Product], (error, results) => {
+    await db.query(QUERY.removeFromCart, [req.body.User, req.body.Product], (error, results) => {
         if (results.affectedRows === 0) {
             res.status(404).json({message: 'Cart not found'});
         } else {
@@ -281,12 +329,17 @@ const checkOut = async (req, res) => {
         // create order history
         const result = await con.query(QUERY.createOrderHistory, [req.body.User, new Date(), "Pending"]);
         const OrderHistory = result[0].insertId;
+        const prod = [];
+        const quant = [];
         // loop over cart
         for (let i = 0; i < data.length; i++) {
             // check if there is enough supply
             if (data[i].SupplyQuantity - data[i].CartQuantity < 0) {
                 throw new Error('Out of stock');
             }
+            // save info
+            prod.push(data[i].Product);
+            quant.push(data[i].CartQuantity);
             // update supply
             await con.query(QUERY.updateSupply, [data[i].SupplyQuantity - data[i].CartQuantity, data[i].Product]);
             // add to order table
@@ -294,8 +347,9 @@ const checkOut = async (req, res) => {
             // remove from cart
             await con.query(QUERY.removeFromCart, [req.body.User, data[i].Product]);
         }
-        // sammla data under loop sedan kalla på en prisräknare
-        con.commit();
+        let total = await priceCalculator(prod, quant);
+        await con.query(QUERY.updateOrderHistoryTotal, [total, OrderHistory]);
+        await con.commit();
         res.status(200).json({message: 'Checked out', data: results[0]});
     } catch (error) {
         await con.rollback();
@@ -303,12 +357,33 @@ const checkOut = async (req, res) => {
         res.status(400).json({message: error.message});
     } finally {
         if (con) {
-            con.release();
+            await con.release();
         }
     }
 }
 
-
+// takes arrays of productId and Quantity
+const priceCalculator = async(products, quantities) => {
+    logger.info(`calculating price`);
+    let con;
+    try {
+        let total = 0;
+        // grab connection
+        con = await db.promise().getConnection();
+        for (let i = 0; i < products.length; i++) {
+            const result = await con.query(QUERY.getProductPrice, products[i]);
+            const price = result[0];
+            total += price[0].Price * quantities[i];
+        }
+        return total;
+    } catch (error) {
+        logger.error(error.message);
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
 
 module.exports = {
     getProducts, 
