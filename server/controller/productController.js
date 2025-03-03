@@ -255,6 +255,7 @@ const addToCart = async (req, res) => {
         logger.error(error.message);
         res.status(400).json({message: 'Error'});
     } finally {
+
         if(con) {
             await con.release();
         }
