@@ -40,6 +40,7 @@ const Query = {
 
 
     //Shopping Cart Queries
+    fancyGetCart: 'SELECT * FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category;',
     findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
     findProdInCartByUser: 'SELECT Product FROM ShoppingCart WHERE User = ?',
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
