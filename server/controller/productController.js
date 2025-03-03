@@ -294,7 +294,7 @@ const getCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, removing from cart`);
-    await db.query(QUERY.removeFromCart, [req.body.User, req.body.Product], (error, results) => {
+    await db.query(QUERY.removeFromCart, [req.userId, req.body.Product], (error, results) => {
         if (results.affectedRows === 0) {
             res.status(404).json({message: 'Cart not found'});
         } else {
@@ -311,7 +311,7 @@ const checkOut = async (req, res) => {
         // grab connection
         con = await db.promise().getConnection();
         // grab cart and supply
-        const results = await con.query(QUERY.getCartAndSupply, [req.body.User]);
+        const results = await con.query(QUERY.getCartAndSupply, [req.userId]);
         const data = results[0];
         if (data.length === 0) {
             throw new Error('Cart is empty');
@@ -319,7 +319,7 @@ const checkOut = async (req, res) => {
         // start of transaction
         await con.beginTransaction();
         // create order history
-        const result = await con.query(QUERY.createOrderHistory, [req.body.User, new Date(), "Pending"]);
+        const result = await con.query(QUERY.createOrderHistory, [req.userId, new Date(), "Pending"]);
         const OrderHistory = result[0].insertId;
         const prod = [];
         const quant = [];
@@ -337,7 +337,7 @@ const checkOut = async (req, res) => {
             // add to order table
             await con.query(QUERY.addOrder, [OrderHistory, data[i].Product, data[i].CartQuantity]);
             // remove from cart
-            await con.query(QUERY.removeFromCart, [req.body.User, data[i].Product]);
+            await con.query(QUERY.removeFromCart, [req.userId, data[i].Product]);
         }
         let total = await priceCalculator(prod, quant);
         await con.query(QUERY.updateOrderHistoryTotal, [total, OrderHistory]);
@@ -379,6 +379,42 @@ const priceCalculator = async(products, quantities) => {
     }
 }
 
+
+const addGrade = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, adding review`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.addGrade, [req.userId, req.params.id, req.body.Grade, req.body.Comment]);
+        res.status(200).json({message: 'Review added'});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
+
+const getGrades = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, getting reviews`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.getGrades, [req.params.id]);
+        res.status(200).json({message: 'Reviews found', data: result[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
+
+
 module.exports = {
     getProducts, 
     getProduct, 
@@ -398,4 +434,6 @@ module.exports = {
     getCart,
     removeFromCart,
     checkOut,
+    addGrade,
+    getGrades,
 };
