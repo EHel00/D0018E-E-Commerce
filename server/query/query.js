@@ -26,6 +26,7 @@ const Query = {
     selectUserById: 'SELECT * FROM User WHERE idUser = ?',
     createUser: 'INSERT INTO User (Email, Password, PhoneNumber, FirstName, LastName, Address) VALUES (?, ?, ?, ?, ?, ?)',
     selectUserByEmail: 'SELECT * FROM User WHERE Email = ?',
+    updateUser: 'UPDATE User SET Password = ?, PhoneNumber = ?, FirstName = ?, LastName = ?, Address = ? WHERE idUser = ?',
 
     //Role Queries
     selectRole: 'SELECT * FROM Role;',
