@@ -11,6 +11,8 @@ const {
     getOrderHistoryAdmin,
     getOrderDetails,
     updateOrderStatus,
+    updateUser,
+
 } = require("../controller/userController");
 const authenticate = require("../utility/authenticate");
 
@@ -20,6 +22,7 @@ const router = express.Router();
 router.get("/getUsers", validateToken, getUsers);
 
 router.post("/createUser", createUser);
+router.put("/updateUser", validateToken, updateUser);
 router.get("/getUser", validateToken, getUser);
 router.get("/getOrderHistoryCustomer", validateToken, getOrderHistoryCustomer);
 
