@@ -10,6 +10,7 @@ import viewadminProduct from '@/components/AdminViews/viewadminProduct.vue';
 import Checkoutpage from '@/components/CustomerViews/Checkoutpage.vue'
 import HomepageAdmin from '@/components/AdminViews/HomepageAdmin.vue';
 import AdminProfile from '@/components/AdminViews/AdminProfile.vue';
+import createAdmin from '@/components/AdminViews/CreateAdminpage.vue';
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -72,6 +73,11 @@ const router = createRouter({
       path: '/admin/product/:id',
       name: 'viewadminProduct',
       component: viewadminProduct
+    },
+    {
+      path: '/admin/profile/createAdmin',
+      name: 'createAdmin',
+      component: createAdmin
     }
   ]
 });

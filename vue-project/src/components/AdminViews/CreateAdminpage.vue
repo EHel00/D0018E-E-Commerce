@@ -1,7 +1,7 @@
 <template>
     <AdminNavbar />
-    <h1>Profile</h1>
-    <RouterLink :to="{name: 'createAdmin'}">Create Admin</RouterLink>
+    <h1>Create new profile</h1>
+    <RouterLink :to="{name: 'AdminProfile'}">Your profile</RouterLink>
         <div class ="form-container">
             <form @submit.prevent="handleSubmit">
                 <div class="form-row">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <button type="submit">Update</button>
+                <button type="submit">Create admin</button>
             </form>
 
     </div>
@@ -125,7 +125,7 @@ const handleSubmit = async () => {
         };
         try {
             console.log(send);
-            const response = await apiClient.put('/user/updateUser', send);
+            const response = await apiClient.post('/user/createAdmin', send);
             console.log(response);
         } catch (error) {
             console.error('Error updating profile:', error);
