@@ -34,13 +34,13 @@ const Query = {
 
     //Order Queries
     addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
+    getOrder: 'SELECT Orders.Quantity, Product.Price, Product.Size, Category.Description FROM Orders JOIN Product ON Orders.Product = Product.idProduct JOIN Category ON Product.Category = Category.CategoryID WHERE OrderHistory = ?',
 
     createOrderHistory: 'INSERT INTO OrderHistory (User, Date, Status) VALUES (?, ?, ?)',
-    getOrderHistory: 'SELECT * FROM OrderHistory WHERE idOrderHistory = ?',
+    getOrderHistory: 'SELECT * FROM OrderHistory',
     getOrderHistoryByUser: 'SELECT * FROM OrderHistory WHERE User = ?',
     updateOrderHistoryTotal: 'UPDATE OrderHistory set TotalPrice = ? WHERE idOrderHistory = ?',
-
-
+    updateOrderHistoryStatus: 'UPDATE OrderHistory SET Status = ? WHERE idOrderHistory = ?',
 
     //Shopping Cart Queries
     fancyGetCart: 'SELECT * FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category WHERE User = ?',

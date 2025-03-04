@@ -266,7 +266,6 @@ const getCart = async (req, res) => {
     let con;
     try {
         con = await db.promise().getConnection();
-        logger.info("1");
         const result = await con.query(QUERY.fancyGetCart, [req.userId]);
         data = result[0];
         let price = [];
@@ -298,8 +297,6 @@ const removeFromCart = async (req, res) => {
     }catch (error) {
         logger.error(error);
         res.status(400).json({message: 'Error'});
-        
-
     }
     finally{
         if(con){

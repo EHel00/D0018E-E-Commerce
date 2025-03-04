@@ -31,10 +31,10 @@ const router = express.Router();
 router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.get("/getProductsByCategory/:id", getProductsByCategory);
-router.post("/createProduct", createProduct);
-router.post("/createProduct/:id", createProductID);
+router.post("/createProduct", validateToken, authenticate, createProduct);
+router.post("/createProduct/:id", validateToken, authenticate, createProductID);
 // supply
-router.post("/updateSupply", updateSupply);
+router.post("/updateSupply", validateToken, authenticate, updateSupply);
 
 router.get("/getAllSupply", getAllSupply);
 router.get("/getSupplyByProductId/:id", getSupplyByProductId);
@@ -47,7 +47,7 @@ router.get("/getCategory/:id", getCategory);
 router.get("/getCategories", getCategories);
 router.get("/getProductsInCategory/:id", getProductsInCategory);
 
-router.post("/createCategory", createCategory);
+router.post("/createCategory", validateToken, authenticate, createCategory);
 
 
 // shopping cart
