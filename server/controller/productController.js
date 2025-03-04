@@ -272,12 +272,9 @@ const getCart = async (req, res) => {
         let price = [];
         let total = 0;
         for (let i = 0; i < data.length; i++) {
-            
             total += parseInt(data[i].Price) * parseInt(data[i].Quantity);
             price.push(parseInt(data[i].Price)* data[i].Quantity);
         }
-        logger.info(price);
-        logger.info(total);
         res.status(200).json({message: 'Cart found', data: result[0], total: total, price: price});
     } catch (error) {
         logger.error(error.message);

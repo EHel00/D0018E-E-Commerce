@@ -23,6 +23,7 @@ const {
 }
 = require("../controller/productController");
 const validateToken = require("../utility/validateToken");
+const authenticate = require("../utility/authenticate");
 
 const router = express.Router();
 
@@ -39,7 +40,7 @@ router.get("/getAllSupply", getAllSupply);
 router.get("/getSupplyByProductId/:id", getSupplyByProductId);
 
 router.put("/buyOne/:id", buyOne);
-router.put("/addOne/:id", addOne);
+router.put("/addOne/:id", validateToken, authenticate, addOne);
 
 // category
 router.get("/getCategory/:id", getCategory);

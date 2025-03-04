@@ -1,5 +1,3 @@
-const { create } = require("domain");
-
 const Query = {
     //product
     getAllProducts: 'SELECT * FROM Product',
@@ -28,6 +26,11 @@ const Query = {
     selectUserById: 'SELECT * FROM User WHERE idUser = ?',
     createUser: 'INSERT INTO User (Email, Password, PhoneNumber, FirstName, LastName, Address) VALUES (?, ?, ?, ?, ?, ?)',
     selectUserByEmail: 'SELECT * FROM User WHERE Email = ?',
+
+    //Role Queries
+    selectRole: 'SELECT * FROM Role;',
+    selectRoleByUser: 'SELECT * FROM Role WHERE User = ?;',
+    insertRole: 'INSERT INTO Role (User, Role) VALUES (?, ?)',
 
     //Order Queries
     addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
