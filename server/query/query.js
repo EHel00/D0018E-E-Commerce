@@ -1,5 +1,3 @@
-const { create } = require("domain");
-
 const Query = {
     //product
     getAllProducts: 'SELECT * FROM Product',
@@ -29,6 +27,11 @@ const Query = {
     createUser: 'INSERT INTO User (Email, Password, PhoneNumber, FirstName, LastName, Address) VALUES (?, ?, ?, ?, ?, ?)',
     selectUserByEmail: 'SELECT * FROM User WHERE Email = ?',
 
+    //Role Queries
+    selectRole: 'SELECT * FROM Role;',
+    selectRoleByUser: 'SELECT * FROM Role WHERE User = ?;',
+    insertRole: 'INSERT INTO Role (User, Role) VALUES (?, ?)',
+
     //Order Queries
     addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
 
@@ -50,7 +53,7 @@ const Query = {
     getCartAndSupply: 'SELECT ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity, ShoppingCart.idShoppingCart, ShoppingCart.User, Supply.idSupply, ShoppingCart.Product FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = ?',
 
     //Grade Queries
-    getGrades: 'SELECT * FROM Grade WHERE Category = ?',
+    getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName as User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
     addGrade: 'INSERT INTO Grade (User, Category, Grade, Comment) VALUES (?, ?, ?, ?)',
 }
 

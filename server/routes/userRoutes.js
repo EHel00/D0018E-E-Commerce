@@ -6,6 +6,7 @@ const {
     getUser,
     login,
     logout,
+    createAdmin,
 } = require("../controller/userController");
 
 const router = express.Router();
@@ -14,7 +15,9 @@ const router = express.Router();
 router.get("/getUsers", validateToken, getUsers);
 
 router.post("/createUser", createUser);
-router.get("/getUser", validateToken,getUser);
+router.get("/getUser", validateToken, getUser);
+
+router.post("/createAdmin", createAdmin);
 
 router.post("/login", login);
 router.post("/logout", logout);
