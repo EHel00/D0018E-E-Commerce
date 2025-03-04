@@ -208,4 +208,4 @@ const logout = (async(req, res) => {
     res.status(200).json({message: "You're logged out"});
 });
 
-module.exports = {getUsers, createUser, getUser, login, logout, createAdmin, getOrderHistoryCustomer, getOrderHistoryAdmin, getOrderDetails, updateOrderStatus};
+module.exports = {getUsers, createUser, getUser, login, logout, createAdmin, getOrderHistoryCustomer, getOrderHistoryAdmin, getOrderDetails, updateOrderStatus, updateUser};
