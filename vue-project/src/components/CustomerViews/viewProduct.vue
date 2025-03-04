@@ -71,7 +71,6 @@ const handleSubmit = async (product) =>  {
         Quantity: '1',
       };
       const cart = await apiClient.post(`/product/addToCart/`, cartData);
-      localStorage.setItem('addedtoCart',JSON.stringify);
       console.log(cart);
     } catch (error) {
       console.error('Error adding to cart:', error);
