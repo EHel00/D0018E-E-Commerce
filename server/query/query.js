@@ -50,7 +50,7 @@ const Query = {
     getCartAndSupply: 'SELECT ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity, ShoppingCart.idShoppingCart, ShoppingCart.User, Supply.idSupply, ShoppingCart.Product FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = ?',
 
     //Grade Queries
-    getGrades: 'SELECT * FROM Grade WHERE Category = ?',
+    getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName as User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
     addGrade: 'INSERT INTO Grade (User, Category, Grade, Comment) VALUES (?, ?, ?, ?)',
 }
 

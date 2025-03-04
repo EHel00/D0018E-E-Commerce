@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <CustomerNavbar />
         <div>
             <h1 id="checkout">Checkout</h1>
             <tbody id="body" v-for="product in products" :key="product.Product_id">
@@ -32,10 +32,10 @@
 </template>
 
 <script setup>
-import Navbar from './Navbar.vue';
+import CustomerNavbar from '@/components/CustomerNavBar.vue';
 import { onMounted, ref } from 'vue';
 import apiClient from '@/config/axios';
-import { useRouter } from 'vue-router';
+import router from '@/router';
 
 const products = ref([])
 let TotalPrice = ref()
@@ -84,9 +84,10 @@ const getCart = async () => {
     
 }
 const handleSubmit = async () => {
+    
     const response = await apiClient.post(`/product/checkOut`);
     console.log(response)
-    router.push({name: 'Home'});
+    router.push({name: 'HomeCustomer'});
 }
 onMounted(async () => {
     await getCart();
