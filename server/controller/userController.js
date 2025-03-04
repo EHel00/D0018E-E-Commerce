@@ -53,6 +53,7 @@ const createUser = async (req, res) => {
     }
 }
 
+
 const getUser = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching user`);
     logger.info(req.userId)
@@ -64,18 +65,6 @@ const getUser = (req, res) => {
             res.status(200).json({message: "User found", data: results[0]});
         }
     });
-}
-
-const updateUser = async(req, res) => {
-    logger.info(`${req.method} ${req.originalUrl}, updating user`);
-    try {
-        const result = await db.promise().query(QUERY.updateUser, [req.body.Password, req.body.PhoneNumber, req.body.FirstName, req.body.LastName, req.body.Address, req.userId]);
-        res.status(200).json({message: "User updated", data: result[0]});
-    } catch (error) {
-        logger.error(error.message);
-        res.status(400).json({message: "Error"});
-    }
-
 }
 
 const login = async(req, res) => {
@@ -208,4 +197,4 @@ const logout = (async(req, res) => {
     res.status(200).json({message: "You're logged out"});
 });
 
-module.exports = {getUsers, createUser, getUser, login, logout, createAdmin, getOrderHistoryCustomer, getOrderHistoryAdmin, getOrderDetails, updateOrderStatus, updateUser};
+module.exports = {getUsers, createUser, getUser, login, logout, createAdmin, getOrderHistoryCustomer, getOrderHistoryAdmin, getOrderDetails, updateOrderStatus};
