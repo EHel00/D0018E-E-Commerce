@@ -1,6 +1,6 @@
 <template>
 <div>
-  <Navbar />
+  <AdminNavbar />
   <div class="store-container">
     <div v-for="Category in Categories" :key="Category.id" class="category-item">
       <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button">
@@ -29,7 +29,7 @@
 </template>
   
   <script setup>
-  import Navbar from './Navbar.vue';
+  import AdminNavbar from '@/components/AdminNavBar.vue';
   import { ref, onMounted, reactive } from 'vue';
   import { RouterLink } from 'vue-router';
   import apiClient from '@/config/axios'

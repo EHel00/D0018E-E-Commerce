@@ -34,12 +34,12 @@ const handleSubmit = async () => {
   try {
 
     const response = await axios.post('http://localhost:3000/api/user/login', formCredentials, {withCredentials: true});
-    
+    console.log(response.data);
     localStorage.setItem('accessToken', response.data.accessToken);
 
-    //const decodedToken = jwtDecode(response.data.accesstoken)
-
-    console.log(response.data);
+    const decodedToken = jwtDecode(response.data.accessToken)
+    console.log(decodedToken);
+    
     router.push({ name: 'Store' });
   } catch (error) {
     console.error('Error logging in:', error);
