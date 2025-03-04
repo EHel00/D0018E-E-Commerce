@@ -3,10 +3,10 @@
     <div class="navbar-brand">MyStore</div>
     <ul class="navbar-nav">
       <div class="nav-links">
-        <RouterLink :to="{name: 'Home'}" class="nav-link">Home</RouterLink>
+        <RouterLink :to="{name: 'HomepageAdmin'}" class="nav-link">Home</RouterLink>
         <RouterLink :to="{name: 'admin'}" class="nav-link">Store</RouterLink>
           <Logout />
-          <RouterLink to="/profile" class="nav-link">Profile</RouterLink>
+          <RouterLink :to="{name: 'AdminProfile'}" class="nav-link">Profile</RouterLink>
         </div>
     </ul>
   </nav>

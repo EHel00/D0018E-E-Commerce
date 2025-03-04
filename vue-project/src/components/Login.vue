@@ -34,13 +34,15 @@ const handleSubmit = async () => {
   try {
 
     const response = await axios.post('http://localhost:3000/api/user/login', formCredentials, {withCredentials: true});
-    console.log(response.data);
+    console.log(response.data.role);
     localStorage.setItem('accessToken', response.data.accessToken);
-
-    const decodedToken = jwtDecode(response.data.accessToken)
-    console.log(decodedToken);
-    
-    router.push({ name: 'Store' });
+    if(response.data.role === 'admin'){
+      router.push({ name: 'admin' });
+      console.log('admin');
+    } else if(response.data.role === 'customer'){
+      router.push({ name: 'Store' });
+      console.log('customer');
+    }
   } catch (error) {
     console.error('Error logging in:', error);
   }
