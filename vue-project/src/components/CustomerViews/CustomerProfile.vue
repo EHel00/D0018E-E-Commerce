@@ -1,14 +1,14 @@
 <template>
-    <AdminNavbar />
+
+    <CustomerNavBar/>
     <h1>Profile</h1>
-    <RouterLink :to="{name: 'createAdmin'}">Create Admin</RouterLink>
-    <RouterLink :to="{name: 'AdminOrders'}">Order List</RouterLink>
+    <RouterLink :to="{name: 'orderhistory'}">Orderhistory</RouterLink>
         <div class ="form-container">
             <form @submit.prevent="handleSubmit">
                 <div class="form-row">
                     <div class="form-group">
                         <label>First name</label>
-                        <input type="text" v-model = "formData.firstName" />
+                        <input type="text" v-model = "formData.firstName"> </input>
                         <span v-if="v$.firstName.$error" class="error">Only letters allowed</span>
                     </div>
                     <div class="form-group">
@@ -58,7 +58,7 @@
 
 </template>
 <script setup>
-import AdminNavbar from '@/components/AdminNavBar.vue';
+import CustomerNavBar from '@/components/AdminNavBar.vue';
 import { ref, onMounted, reactive } from 'vue';
 import apiClient from '@/config/axios';
 import { computed } from 'vue';

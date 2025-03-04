@@ -11,6 +11,9 @@ import Checkoutpage from '@/components/CustomerViews/Checkoutpage.vue'
 import HomepageAdmin from '@/components/AdminViews/HomepageAdmin.vue';
 import AdminProfile from '@/components/AdminViews/AdminProfile.vue';
 import createAdmin from '@/components/AdminViews/CreateAdminpage.vue';
+import AdminOrderList from '@/components/AdminViews/AdminOrderList.vue';
+import Profilepage from '@/components/CustomerViews/CustomerProfile.vue';
+import Orderhistory from '@/components/CustomerViews/CustomerOrderhistory.vue';
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -53,6 +56,16 @@ const router = createRouter({
       name: 'Checkout',
       component: Checkoutpage
     },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profilepage
+    },
+    {
+      path: '/orderhistory',
+      name: 'orderhistory',
+      component: Orderhistory
+    },
  //Admin routes
     {
       path: '/AdminHomepage',
@@ -78,6 +91,11 @@ const router = createRouter({
       path: '/admin/profile/createAdmin',
       name: 'createAdmin',
       component: createAdmin
+    },
+    {
+      path: '/admin/profile/Orders',
+      name: 'AdminOrders',
+      component: AdminOrderList
     }
   ]
 });

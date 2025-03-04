@@ -69,7 +69,10 @@ const getUser = (req, res) => {
 const updateUser = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, updating user`);
     try {
+        const hashedPassword = bcrypt.hashSync(req.body.Password, 10);
+        req.body.Password = hashedPassword;
         const result = await db.promise().query(QUERY.updateUser, [req.body.Password, req.body.PhoneNumber, req.body.FirstName, req.body.LastName, req.body.Address, req.userId]);
+
         res.status(200).json({message: "User updated", data: result[0]});
     } catch (error) {
         logger.error(error.message);
@@ -172,8 +175,11 @@ const getOrderDetails = async (req, res) => {
 
 const updateOrderStatus = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, updating order status`);
+    let con;
+    logger.info(req.body.idOrderHistory);
     try {
-        const result = await db.promise().query(QUERY.updateOrderHistoryStatus, ["Sent", req.body.idOrderHistory]);
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.updateOrderHistoryStatus, ["Sent", req.body.idOrderHistory]);
         res.status(200).json({message: "Order status updated", data: result[0]});
     } catch (error) {
         logger.error(error.message);
