@@ -123,7 +123,51 @@ const createAdmin = async (req, res) => {
     }
 }
 
+const getOrderHistoryCustomer = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching order history`);
+    try {
+        const result = await db.promise().query(QUERY.getOrderHistoryByUser, [req.userId]);
+        logger.info(result[0]);
+        const result2 = await db.promise().query(QUERY.getOrder, [result[0][0].idOrderHistory]);
+        res.status(200).json({message: "Order history found", OrderHistory: result[0][0], Order: result2[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: "Error"});
+    }
+}
 
+const getOrderHistoryAdmin = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching order history`);
+    try {
+        const result = await db.promise().query(QUERY.getOrderHistory);
+        res.status(200).json({message: "Order history found", data: result[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: "Error"});
+    }
+}
+
+const getOrderDetails = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, fetching order details`);
+    try {
+        const result = await db.promise().query(QUERY.getOrder, [req.body.idOrderHistory]);
+        res.status(200).json({message: "Order details found", data: result[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: "Error"});
+    }
+}
+
+const updateOrderStatus = async (req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating order status`);
+    try {
+        const result = await db.promise().query(QUERY.updateOrderHistoryStatus, ["Sent", req.body.idOrderHistory]);
+        res.status(200).json({message: "Order status updated", data: result[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: "Error"});
+    }
+}
 // const refreshToken = asyncHandler(async (req,res) => {
 //     if (req.cookies?.jwt) { // If the cookie is not present it will return undefined/null
 //         // Getting refreshToken from cookie
@@ -151,4 +195,5 @@ const logout = (async(req, res) => {
     res.clearCookie('jwt');
     res.status(200).json({message: "You're logged out"});
 });
-module.exports = {getUsers, createUser, getUser, login, logout, createAdmin};
+
+module.exports = {getUsers, createUser, getUser, login, logout, createAdmin, getOrderHistoryCustomer, getOrderHistoryAdmin, getOrderDetails, updateOrderStatus};
