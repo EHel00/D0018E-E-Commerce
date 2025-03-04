@@ -8,6 +8,8 @@ import viewProduct from '@/components/CustomerViews/viewProduct.vue';
 import Adminpage from '@/components/AdminViews/Adminpage.vue';
 import viewadminProduct from '@/components/AdminViews/viewadminProduct.vue';
 import Checkoutpage from '@/components/CustomerViews/Checkoutpage.vue'
+import HomepageAdmin from '@/components/AdminViews/HomepageAdmin.vue';
+import AdminProfile from '@/components/AdminViews/AdminProfile.vue';
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -52,9 +54,19 @@ const router = createRouter({
     },
  //Admin routes
     {
+      path: '/AdminHomepage',
+      name: 'HomepageAdmin',
+      component : HomepageAdmin
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: Adminpage
+    },
+    {
+      path: '/admin/profile',
+      name: 'AdminProfile',
+      component: AdminProfile
     },
     {
       path: '/admin/product/:id',

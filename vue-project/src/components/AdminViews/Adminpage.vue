@@ -6,7 +6,7 @@
       <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button">
         <div class="store-box">
           <div> {{ Category.Description }}</div>
-          <div> <img :src="Category.Image" alt="Category Image" class="category-image" /></div>
+          <div> <img :src="Category.Image"  class="category-image" /> {{ Category.Image }}</div>
           <div>
             <button class="store-button">View Product</button>
           </div>
