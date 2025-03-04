@@ -288,13 +288,24 @@ const getCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, removing from cart`);
-    await db.query(QUERY.removeFromCart, [req.userId, req.body.Product], (error, results) => {
-        if (results.affectedRows === 0) {
-            res.status(404).json({message: 'Cart not found'});
-        } else {
-            res.status(200).json({message: 'Removed from cart'});
+    let con;
+    logger.info(req.body.Product)
+    try {
+        con = await db.promise().getConnection();
+        await con.query(QUERY.removeFromCart, [req.userId, req.body.Product])
+        res.status(200).json({message: 'product removed' })
+
+    }catch (error) {
+        logger.error(error);
+        res.status(400).json({message: 'Error'});
+        
+
+    }
+    finally{
+        if(con){
+            await con.release();
         }
-    })
+    }
 }
 
 

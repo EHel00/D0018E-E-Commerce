@@ -1,5 +1,5 @@
 <template>
-    <navbar/>
+    <AdminNavbar/>
     <div class="product-container">
       
         <div class="product-frame" v-for="product in Products" :key="product.id">
@@ -23,7 +23,7 @@
   </template>
     
   <script setup>
-  import Navbar from './Navbar.vue';
+  import AdminNavbar from '@/components/AdminNavBar.vue';
   import { ref, onMounted } from 'vue';
   import apiClient from '@/config/axios';
   import { RouterLink, useRoute } from 'vue-router';
