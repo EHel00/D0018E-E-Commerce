@@ -66,6 +66,18 @@ const getUser = (req, res) => {
     });
 }
 
+const updateUser = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating user`);
+    try {
+        const result = await db.promise().query(QUERY.updateUser, [req.body.Password, req.body.PhoneNumber, req.body.FirstName, req.body.LastName, req.body.Address, req.userId]);
+        res.status(200).json({message: "User updated", data: result[0]});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: "Error"});
+    }
+
+}
+
 const login = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, logging in user`);
     let con;
