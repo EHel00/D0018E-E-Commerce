@@ -1,5 +1,6 @@
 <template>
     <AdminNavbar/>
+    <body>
     <div class="product-container">
       
         <div class="product-frame" v-for="product in Products" :key="product.id">
@@ -19,7 +20,7 @@
       <button type="submit">Add Product</button>
     </div>
   </form>
-
+  </body>
   </template>
     
   <script setup>
@@ -88,11 +89,12 @@ const handleSubmit = async () => {
   
   .product-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-wrap: wrap; /* Allow the boxes to wrap to the next line */
+   justify-content: center;
     gap: 20px;
-    padding: 20px;
-    flex-wrap: nowrap; /* Ensure no wrapping */
+   padding: 20px;
+   max-width: 40%; /* Set a maximum width for the container */
+   margin: 0 auto; /* Center the container */
   }
   
   .product-frame {

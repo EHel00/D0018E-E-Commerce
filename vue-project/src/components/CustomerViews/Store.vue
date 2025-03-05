@@ -53,11 +53,12 @@ onMounted(async () => {
 <style scoped>
 .store-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  flex-wrap: nowrap; /* Ensure no wrapping */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+    height: 100%;
 }
 
 .store-box {

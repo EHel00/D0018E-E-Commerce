@@ -1,6 +1,6 @@
 <template>
 
-    <CustomerNavBar/>
+    <CustomerNavbar/>
     <h1>Profile</h1>
     <RouterLink :to="{name: 'orderhistory'}">Orderhistory</RouterLink>
         <div class ="form-container">
@@ -58,7 +58,7 @@
 
 </template>
 <script setup>
-import CustomerNavBar from '@/components/AdminNavBar.vue';
+import CustomerNavbar from '@/components/CustomerNavBar.vue';
 import { ref, onMounted, reactive, computed } from 'vue';
 import apiClient from '@/config/axios';
 import { useVuelidate } from '@vuelidate/core';
