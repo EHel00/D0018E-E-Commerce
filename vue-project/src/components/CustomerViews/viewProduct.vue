@@ -55,6 +55,13 @@ const commentSubmit = async (commentData) => {
     Grade: commentData.Grade,
 
   }
+  if(send.Grade < 0 || send.Grade > 5 ) {
+    alert("Grade must be between 0 and 5");
+    return;
+  } else if(send.Comment.length < 1) {
+    alert("Please write a comment");
+    return;
+  }
   try {
     const response = await apiClient.post(`/product/addReview/${id}`, send);
     console.log(response);

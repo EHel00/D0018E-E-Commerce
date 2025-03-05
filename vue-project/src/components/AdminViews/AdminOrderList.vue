@@ -24,7 +24,7 @@
                         <td>{{order.totalPrice}}</td>
                         <td>{{order.status}}</td>
                         <td>
-                            <button @click="showDetails(order.orderid)">More info</button> 
+                            <button @click="showDetails(order)">More info</button> 
                         </td>
                         <td> <button @click="changeStatus(order)" >Change status</button> </td>
                     </tr>
@@ -45,30 +45,39 @@ import AdminNavbar from '@/components/AdminNavBar.vue';
 import { ref, onMounted } from 'vue';
 import apiClient from '@/config/axios';
 
-const isActive = ref(new Map());
+//const isActive = ref(new Map());
 const orders = ref([]);
 
 const changeStatus = async(order) => {
     let id = {
         idOrderHistory: order.orderid,
     }
+    console.log(id);
     const response = await apiClient.put(`/user/updateOrderStatus`,id);
     console.log(response);
 }
 
-const showDetails = function(id) {
-    if(isActive.value.get(id)){
-        isActive.value.set(id, false);
-    } else {
-        isActive.value.set(id, true);
+const showDetails = async(order) => {
+    console.log(order.orderid);
+    let idorder = {
+        idOrderHistory: order.orderid,
+       
     }
+    console.log(idorder);
+    const response = await apiClient.get(`/user/getOrderDetails`, {params: {idOrderHistory: order.orderid}});
+    console.log(response);
 }
+//     if(isActive.value.get(id)){
+//         isActive.value.set(id, false);
+//     } else {
+//         isActive.value.set(id, true);
+//     }
+// }
 
-const fetchOrders = async () => {
+// const fetchOrders = async () => {
     
-    console.log(response.data.data);
-    orders.value = response.data.data;
-}
+    
+// }
 onMounted (async () => {
     //await fetchOrders();
     const response = await apiClient.get('/user/getOrderHistoryAdmin');
@@ -77,7 +86,7 @@ onMounted (async () => {
         let order = {
             orderid: response.data.data[i].idOrderHistory,
             user: response.data.data[i].User,
-            date: response.data.data[i].Date,
+            date: response.data.data[i].Date.split('T')[0],
             totalPrice: response.data.data[i].TotalPrice,
             status: response.data.data[i].Status
         }
@@ -90,4 +99,8 @@ onMounted (async () => {
 </script>
 <style>
 
+
+.content {
+    padding:20px;
+}
 </style>

@@ -168,8 +168,11 @@ const getOrderHistoryAdmin = async (req, res) => {
 
 const getOrderDetails = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching order details`);
+    let con;
+    logger.info(req.query);
     try {
-        const result = await db.promise().query(QUERY.getOrder, [req.body.idOrderHistory]);
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.getOrder, [req.query.idOrderHistory]);
         res.status(200).json({message: "Order details found", data: result[0]});
     } catch (error) {
         logger.error(error.message);
