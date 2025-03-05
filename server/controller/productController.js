@@ -102,6 +102,7 @@ const createProduct = (req, res) => {
         }
     });
 }
+
 const createProductID = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Product`);
     db.query(QUERY.insertProduct, [req.params.id, req.body.Size, req.body.Price], (error, results) => { 
