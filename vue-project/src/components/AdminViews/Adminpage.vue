@@ -81,7 +81,8 @@
     align-items: center;
     gap: 20px;
     padding: 20px;
-    flex-wrap: nowrap; /* Ensure no wrapping */
+    flex-wrap: wrap;
+    height: 100%;
   }
   
   .store-box {
