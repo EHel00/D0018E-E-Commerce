@@ -8,12 +8,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>First name</label>
-                        <input type="text" v-model = "formData.firstName"> </input>
+                        <input type="text" v-model="formData.firstName">
                         <span v-if="v$.firstName.$error" class="error">Only letters allowed</span>
                     </div>
                     <div class="form-group">
                         <label>Last name</label>
-                        <input type="text" v-model = "formData.lastName" />
+                        <input type="text" v-model="formData.lastName" />
                         <span v-if="v$.firstName.$error" class="error">Only letters allowed</span>
                     </div>
                 </div>
@@ -21,12 +21,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" v-model = "formData.Email" />
+                        <input type="email" v-model="formData.Email" />
                         <span v-if="v$.Email.$error" class="error">{{v$.Email.$error[0].$message}} </span>
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <input type="text" v-model = "formData.address" />
+                        <input type="text" v-model="formData.address" />
                         <span v-if="v$.address.$error" class="error">Address required</span>
                     </div>
                 </div>
@@ -34,19 +34,19 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phonenumber</label>
-                        <input type="tel" v-model = "formData.phoneNumber" />
+                        <input type="tel" v-model="formData.phoneNumber" />
                         <span v-if="v$.phoneNumber.$error" class="error">Phone number needs to be 10 digits </span>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" v-model = "formData.password" />
+                        <input type="password" v-model="formData.password" />
                         <span v-if="v$.phoneNumber.$error" class="error">{{ v$.password.$errors[0].$message }} </span>
                     </div>
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" v-model = "formData.confirmPassowrd" />
+                        <input type="password" v-model="formData.confirmPassowrd" />
                         <span v-if="v$.confirmPassword.$error" class="error">Password must match</span>
                     </div>
                 </div>
@@ -59,9 +59,8 @@
 </template>
 <script setup>
 import CustomerNavBar from '@/components/AdminNavBar.vue';
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, computed } from 'vue';
 import apiClient from '@/config/axios';
-import { computed } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, minLength, maxLength, sameAs, email } from '@vuelidate/validators';
 
@@ -138,11 +137,11 @@ const fetchProfile = async () => {
     try {
         const response = await apiClient.get('/user/getUser');
         console.log(response.data);
-        formData.firstName = response.data.firstName;
-        formData.lastName = response.data.lastName;
-        formData.Email = response.data.Email;
-        formData.address = response.data.address;
-        formData.phoneNumber = response.data.phoneNumber;
+        formData.firstName = response.data.data.FirstName;
+        formData.lastName = response.data.data.LastName;
+        formData.Email = response.data.data.Email;
+        formData.address = response.data.data.Address;
+        formData.phoneNumber = response.data.data.PhoneNumber;
 
     }catch (error) {
         console.error('Error fetching profile:', error);

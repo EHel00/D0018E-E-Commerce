@@ -8,12 +8,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>First name</label>
-                        <input type="text" v-model = "formData.firstName" />
+                        <input type="text" v-model = "formData.FirstName" />
                         <span v-if="v$.firstName.$error" class="error">Only letters allowed</span>
                     </div>
                     <div class="form-group">
                         <label>Last name</label>
-                        <input type="text" v-model = "formData.lastName" />
+                        <input type="text" v-model = "formData.LastName" />
                         <span v-if="v$.firstName.$error" class="error">Only letters allowed</span>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <input type="text" v-model = "formData.address" />
+                        <input type="text" v-model = "formData.Address" />
                         <span v-if="v$.address.$error" class="error">Address required</span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Phonenumber</label>
-                        <input type="tel" v-model = "formData.phoneNumber" />
+                        <input type="tel" v-model = "formData.PhoneNumber" />
                         <span v-if="v$.phoneNumber.$error" class="error">Phone number needs to be 10 digits </span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" v-model = "formData.confirmPassowrd" />
+                        <input type="password" v-model = "formData.confirmPassword" />
                         <span v-if="v$.confirmPassword.$error" class="error">Password must match</span>
                     </div>
                 </div>
@@ -69,14 +69,32 @@ import { required, minLength, maxLength, sameAs, email } from '@vuelidate/valida
 const error = ref(null);
 
 const formData = reactive({
-    firstName: '',
-    lastName: '',
+    FirstName: '',
+    LastName: '',
     Email: '',
-    address: '',
-    phoneNumber: '',
+    Address: '',
+    PhoneNumber: '',
     password: '',
     confirmPassword: '',
 });
+
+const fetchProfile = async () => {
+    try {
+        const response = await apiClient.get('/user/getUser');
+        console.log(response.data.data);
+        formData.FirstName = response.data.data.FirstName;
+        formData.LastName = response.data.data.LastName;
+        formData.Email = response.data.data.Email;
+        formData.Address = response.data.data.Address;
+        formData.PhoneNumber = response.data.data.PhoneNumber;
+        console.log(formData.FirstName);
+
+    }catch (error) {
+        console.error('Error fetching profile:', error);
+    }
+};
+
+
 const alphaOnly = (value) => /^[a-zA-Z]+$/i.test(value); // Only letters
 const alphaNum = value => /^[0-9]+$/.test(value); // Only numbers
 
@@ -114,7 +132,7 @@ const rules = computed(() => ({
 const v$ = useVuelidate(rules, formData);
 
 const handleSubmit = async () => {
-    const result = v$.value.$validate();
+    const result = await v$.value.$validate();
     if (result) {
         const send = {
             Email: formData.Email,
@@ -134,20 +152,7 @@ const handleSubmit = async () => {
     }
 };
 
-const fetchProfile = async () => {
-    try {
-        const response = await apiClient.get('/user/getUser');
-        console.log(response.data);
-        formData.firstName = response.data.firstName;
-        formData.lastName = response.data.lastName;
-        formData.Email = response.data.Email;
-        formData.address = response.data.address;
-        formData.phoneNumber = response.data.phoneNumber;
 
-    }catch (error) {
-        console.error('Error fetching profile:', error);
-    }
-};
 onMounted (() => {
     fetchProfile();
 });
