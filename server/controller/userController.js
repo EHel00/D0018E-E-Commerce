@@ -143,8 +143,12 @@ const getOrderHistoryCustomer = async (req, res) => {
     try {
         const result = await db.promise().query(QUERY.getOrderHistoryByUser, [req.userId]);
         logger.info(result[0]);
-        const result2 = await db.promise().query(QUERY.getOrder, [result[0][0].idOrderHistory]);
-        res.status(200).json({message: "Order history found", OrderHistory: result[0][0], Order: result2[0]});
+        let orders = [];
+        for (let i = 0; i < result[0].length; i++) {
+            const order = await db.promise().query(QUERY.getOrder, [result[0][i].idOrderHistory]);
+            orders.push(order[0]);
+        }
+        res.status(200).json({message: "Order history found", OrderHistory: result[0][0], Order: orders});
     } catch (error) {
         logger.error(error.message);
         res.status(400).json({message: "Error"});
