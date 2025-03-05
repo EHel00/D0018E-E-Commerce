@@ -7,7 +7,7 @@
         <RouterLink to="/store" class="nav-link">Store</RouterLink>
         <RouterLink to="/store/checkout/:id" class="nav-link">Checkout</RouterLink>
           <Logout />
-          <RouterLink to="/profile" class="nav-link">Profile</RouterLink>
+          <RouterLink :to="{name: 'profile'}" class="nav-link">Profile</RouterLink>
         </div>
     </ul>
   </nav>
