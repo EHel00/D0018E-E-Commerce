@@ -9,7 +9,7 @@
                     <td id="td"> Quantity:{{ product.Quantity }}</td>
                     <td id="td"> Product price:{{ product.Price_single_product }}</td>
                     <td id="td"> Total product price:{{ product.Price_products }}</td>
-                    <td id="td"> Product:{{ product.Size }}</td>
+                    <td id="td"> Size:{{ product.Size }}</td>
                     <td id="td"> Image:{{ product.Image }}</td>
                     <button @click="removeProduct(product.Product_id)">Remove product</button>
                 </tr>
@@ -33,7 +33,7 @@
 
 <script setup>
 import CustomerNavbar from '@/components/CustomerNavBar.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import apiClient from '@/config/axios';
 import router from '@/router';
 
@@ -52,6 +52,7 @@ const removeProduct = async (product) => {
         
         const response = await apiClient.put(`/product/removeFromCart`, send);
         console.log(response)
+        window.location.reload();
 
     }catch (error){
         console.log(error);
@@ -59,6 +60,7 @@ const removeProduct = async (product) => {
     
 
 }
+
 const getCart = async () => {
     const response = await apiClient.get(`/product/getCart`);
     
@@ -84,11 +86,14 @@ const getCart = async () => {
     
 }
 const handleSubmit = async () => {
-    
+    try{
     const response = await apiClient.post(`/product/checkOut`);
     console.log(response)
     router.push({name: 'HomeCustomer'});
-}
+
+    }catch (error){
+        console.log(error);
+}};
 onMounted(async () => {
     await getCart();
     

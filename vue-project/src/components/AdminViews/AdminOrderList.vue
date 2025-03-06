@@ -28,6 +28,16 @@
                         </td>
                         <td> <button @click="changeStatus(order)" >Change status</button> </td>
                     </tr>
+                    <tr v-if="isActive.get(order.orderid)" v-for="(orderDetail, index) in orderDetails" :key="index">
+                        <td colspan="6">
+                        <div class="order-detail">
+                            <p>Description: {{ orderDetail.Description }}</p>
+                            <p>Size: {{ orderDetail.Size }}</p>
+                            <p>Price: {{orderDetail.Price }}</p>
+                            <p>Quantity: {{orderDetail.Quantity }}</p>
+                        </div>
+                        </td>
+                </tr>
                     
 
                 </tbody>
@@ -60,7 +70,7 @@ const showDetails = async(id) => {
         isActive.value.set(id, false);
     } else {
         isActive.value.set(id, true);
-    
+        orderDetails.value = [];
         const response = await apiClient.get(`/user/getOrderDetails`, {params: {idOrderHistory: id}});
         console.log(response);
         for (let i = 0; i < response.data.data.length; i++) {
@@ -72,9 +82,12 @@ const showDetails = async(id) => {
             }
             console.log(orderDetail);
             orderDetails.value.push(orderDetail);
+            
             console.log(orderDetails);
+            
 
         }
+        
     }
  }
    

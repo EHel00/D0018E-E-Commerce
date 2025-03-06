@@ -4,11 +4,13 @@
     <div class="product-container">
       
         <div class="product-frame" v-for="product in Products" :key="product.id">
-          <h1 class="product-title">{{ product.Description }}</h1>
-          <p class="product-description">Size = {{ product.Size }}</p>
-          <p class="product-price">Price = {{ product.Price }}</p>
-          <img :src="product.Image" alt="Product Image" />
-          <button class="add-to-cart-button"  @click="addSupply(product.id)" >add Product</button>
+         <div class="product-item"> 
+            <h1 class="product-title">{{ product.Description }}</h1>
+            <p class="product-description">Size = {{ product.Size }}</p>
+            <p class="product-price">Price = {{ product.Price }}</p>
+            <img :src="product.Image" alt="Product Image" />
+            <button class="add-to-cart-button"  @click="addSupply(product.id)" >add Product</button>
+          </div>
         </div>
     </div>
     <form @submit.prevent="handleSubmit">
@@ -88,58 +90,78 @@ const handleSubmit = async () => {
     <style scoped>
   
   .product-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow the boxes to wrap to the next line */
-   justify-content: center;
-    gap: 20px;
-   padding: 20px;
-   max-width: 40%; /* Set a maximum width for the container */
-   margin: 0 auto; /* Center the container */
-  }
-  
-  .product-frame {
-    width: 300px; /* Set a fixed width for the boxes */
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    text-align: center;
-    margin-top: 200px;
-    margin-bottom: 200px; /* Add margin to create space between boxes */
-  }
-  
-  
-  .product-title {
-    font-size: 1.5rem;
-    margin: 10px 0;
-    color: black;
-  }
-  
-  .product-description {
-    font-size: 1.2rem;
-    margin: 10px 0;
-    color: black; /* Make the text black */
-  }
-  
-  .product-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 10px 0;
-    color: black; /* Make the text black */
-  }
-  
-  .add-to-cart-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .add-to-cart-button:hover {
-    background-color: #218838;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Create a grid with 4 columns */
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-frame {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  color: black;
+}
+
+.product-description {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: black; /* Make the text black */
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: black; /* Make the text black */
+}
+
+.add-to-cart-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.add-to-cart-button:hover {
+  background-color: #218838;
+}
+
+.newCategory {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.newCategory input {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.newCategory button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.newCategory button:hover {
+  background-color: #0056b3;
+}
     </style>
