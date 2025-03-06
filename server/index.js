@@ -14,7 +14,9 @@ app.use(cors({
     credentials: true,
     origin :['http://localhost:5173',
             'http://127.0.0.1:8080',
-            'http://localhost:8080'] // allow requests to server from port 5174
+            'http://localhost:8080',
+            'http://13.60.35.100:8080'
+            ] // allow requests to server from port 5174
     }));
 
 app.use("/api/user", require("./routes/userRoutes"));
