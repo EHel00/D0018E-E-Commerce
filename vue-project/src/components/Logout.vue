@@ -10,7 +10,7 @@ const router = useRouter();
 
 const logout = async () => {
     try{
-        const response = await axios.post('http://13.60.35.100:3000/api/user/logout', {}, {withCredentials: true});
+        const response = await axios.post('http://13.53.62.51:3000/api/user/logout', {}, {withCredentials: true});
         console.log(response);
         localStorage.removeItem('accessToken');
         router.push({name: 'Login'});
