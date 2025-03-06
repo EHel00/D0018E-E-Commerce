@@ -76,38 +76,83 @@
   
   <style scoped>
   .store-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    flex-wrap: wrap;
-    height: 100%;
-  }
-  
-  .store-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    color: black;
-  }
-  
-  .store-button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  p {
-    color: black;
-  }
+    display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Create a grid with 4 columns */
+  gap: 20px;
+  padding: 20px;
+}
+
+.store-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 200px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  color: black;
+}
+
+.category-image {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.store-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.store-button:hover {
+  background-color: #0056b3;
+}
+
+.new-category-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.newCategory {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.newCategory input {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.newCategory button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.newCategory button:hover {
+  background-color: #218838;
+}
+
+#header {
+  padding-bottom: 20px;
+}
   </style>

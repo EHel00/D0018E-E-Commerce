@@ -56,6 +56,7 @@ const rules = computed(() => ({
   },
   Password: {
     required,
+    minLength: minLength(8)
     
   },
   ConfirmPassword: {

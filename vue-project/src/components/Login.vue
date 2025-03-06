@@ -4,10 +4,10 @@
       <h1 id="header">Login</h1>
       <form @submit.prevent="handleSubmit">
 
-        <input type="text" placeholder="Email" v-model="formData.Email" />
-        <input type="password" placeholder="Password" v-model="formData.Password" />
+        <input class="logininput" type="text" placeholder="Email" v-model="formData.Email" />
+        <input class="logininput" type="password" placeholder="Password" v-model="formData.Password" />
 
-        <button type="submit">Login</button>
+        <button class="loginbutton" type="submit">Login</button>
       </form>
     </div>
   </template>
@@ -48,22 +48,22 @@ const handleSubmit = async () => {
   }
 };
 
-  </script>
-  <style>
-#header {
+</script>
+<style>
+  #header {
     padding-bottom: 20px;
 }
-  .register input{
-      width: 320px;
-      height: 40px;
-      padding-left: 20px;
-      display: block;
-      margin-bottom: 30px;
-      margin-right: auto;
-      margin-left:auto;
-      border: 1px solid;
+  .logininput{
+    width: 320px;
+    height: 40px;
+    padding-left: 20px;
+    display: block;
+    margin-bottom: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px solid;
   }
-  .register button {
+  .loginbutton {
       width: 320px;
       height: 40px;
       border: 1px solid;

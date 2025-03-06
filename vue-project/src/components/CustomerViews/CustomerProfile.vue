@@ -21,7 +21,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" v-model="formData.Email" />
+                        <input type="email" v-model="formData.Email" disabled/>
                         <span v-if="v$.Email.$error" class="error">{{v$.Email.$error[0].$message}} </span>
                     </div>
                     <div class="form-group">
