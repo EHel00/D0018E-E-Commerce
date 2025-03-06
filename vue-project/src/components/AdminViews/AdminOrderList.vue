@@ -118,7 +118,7 @@ onMounted (async () => {
 });
 </script>
 <style>
-.hideDetails: {
+.hideDetails {
     display: none;
 }
 
