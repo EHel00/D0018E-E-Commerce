@@ -6,6 +6,7 @@
           <h1 class="product-title">{{ product.Description }}</h1>
           <p class="product-description">Size = {{ product.Size }}</p>
           <p class="product-price">Price = {{ product.Price }}</p>
+          <p class="product-quantity">In Stock= {{ product.Quantity }}</p>
           <img :src="product.Image" alt="Product Image" />
           <button @click="handleSubmit(product)" >Add to Cart</button>
         </div>  
@@ -121,6 +122,7 @@ onMounted(async () => {
       Image: response.data.data[i].Image,
       Price:  response.data.data[i].Price,
       Size:  response.data.data[i].Size,
+      Quantity: response.data.data[i].Quantity,
     };
     console.log(product);
     Products.value.push(product);
@@ -207,7 +209,12 @@ onMounted(async () => {
   margin: 10px 0;
   color: black; /* Make the text black */
 }
-
+.product-quantity {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: black; /* Make the text black */
+}
 .add-to-cart-button {
   margin-top: 10px;
   padding: 10px 20px;

@@ -8,8 +8,12 @@
             <h1 class="product-title">{{ product.Description }}</h1>
             <p class="product-description">Size = {{ product.Size }}</p>
             <p class="product-price">Price = {{ product.Price }}</p>
+            <p class="product-quantity">In Stock= {{ product.Quantity }}</p>
             <img :src="product.Image" alt="Product Image" />
+            <div >
+            <input type="number" min="0" v-model="SupplyAmount[product.id]" placeholder="Add Quantity" />
             <button class="add-to-cart-button"  @click="addSupply(product.id)" >add Product</button>
+            </div>
           </div>
         </div>
     </div>
@@ -33,14 +37,16 @@
   import { reactive } from 'vue';
  
 
-
+const SupplyAmount = ref({});
   
 const formData = reactive({
   Size: '',
   Price: '',
 });
 
-
+// const SupplyAmount = reactive({
+//   Supply: '',
+// });
 const handleSubmit = async () => {
   
   try {
@@ -52,8 +58,6 @@ const handleSubmit = async () => {
       alert('Please enter a positive number');
       return;
     }
-
-
     const id = $route.params.id;
     const response = await apiClient.post(`/product/createProduct/${id}`, formData);
     console.log(response.data);
@@ -62,12 +66,18 @@ const handleSubmit = async () => {
     console.error('Error adding product:', error);
   }
 };
+
   const addSupply = async (id) =>  {
+    const Supplyadd = {
+      Quantity: SupplyAmount.value[id],
+    }
       try {
-        const response = await apiClient.put(`/product/addOne/${id}`);
-        console.log(response.data.data);
+        console.log(Supplyadd);
+        const response = await apiClient.post(`/product/updateSupply/${id}`, Supplyadd);
+        console.log(response);
+        window.location.reload();
       } catch (error) {
-        console.error('Error adding to cart:', error);
+        console.error('Error adding supply:', error);
       }
     };
   
@@ -89,6 +99,7 @@ const handleSubmit = async () => {
         Image: response.data.data[i].Image,
         Price:  response.data.data[i].Price,
         Size:  response.data.data[i].Size,
+        Quantity: response.data.data[i].Quantity,
       };
       console.log(product);
       Products.value.push(product);
@@ -137,7 +148,12 @@ const handleSubmit = async () => {
   margin: 10px 0;
   color: black; /* Make the text black */
 }
-
+.product-quantity {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: black; /* Make the text black */
+}
 .add-to-cart-button {
   margin-top: 10px;
   padding: 10px 20px;
