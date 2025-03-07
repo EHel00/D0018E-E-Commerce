@@ -30,7 +30,7 @@ router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.post("/createProduct/:id", validateToken, authenticate, createProductID);
 // supply
-router.post("/updateSupply", validateToken, authenticate, updateSupply);
+router.post("/updateSupply/:id", validateToken, authenticate, updateSupply);
 
 router.get("/getAllSupply", getAllSupply);
 router.get("/getSupplyByProductId/:id", getSupplyByProductId);

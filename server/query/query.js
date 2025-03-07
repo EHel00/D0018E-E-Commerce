@@ -44,7 +44,7 @@ const Query = {
     updateOrderHistoryStatus: 'UPDATE OrderHistory SET Status = ? WHERE idOrderHistory = ?',
 
     //Shopping Cart Queries
-    fancyGetCart: 'SELECT * FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category WHERE User = ?',
+    fancyGetCart: 'SELECT *, Supply.Quantity as Stock FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category JOIN Supply on Product.idProduct = Supply.Product WHERE User = ?',
     findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
     findProdInCartByUser: 'SELECT Product FROM ShoppingCart WHERE User = ?',
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
