@@ -65,6 +65,7 @@ const commentSubmit = async (commentData) => {
   try {
     const response = await apiClient.post(`/product/addReview/${id}`, send);
     console.log(response);
+    window.location.reload();
   } catch (error) {
     console.error('Error adding comment:', error)
   }

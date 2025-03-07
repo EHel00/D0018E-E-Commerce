@@ -16,8 +16,8 @@
     <form @submit.prevent="handleSubmit">
     <h1 id="header">New Product</h1>
     <div class="newCategory">
-      <input type="text" v-model="formData.Size" placeholder="Size" />
-      <input type="text" v-model="formData.Price" placeholder="Price" />
+      <input type="number" min="0" v-model="formData.Size" placeholder="Size" />
+      <input type="number" min="0" v-model="formData.Price" placeholder="Price" />
 
       <button type="submit">Add Product</button>
     </div>
@@ -31,15 +31,29 @@
   import apiClient from '@/config/axios';
   import { RouterLink, useRoute } from 'vue-router';
   import { reactive } from 'vue';
-  
+ 
+
+
   
 const formData = reactive({
   Size: '',
   Price: '',
 });
 
+
 const handleSubmit = async () => {
+  
   try {
+    if (formData.Size === '' || formData.Price === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+    if (formData.Size < 0 || formData.Price < 0) {
+      alert('Please enter a positive number');
+      return;
+    }
+
+
     const id = $route.params.id;
     const response = await apiClient.post(`/product/createProduct/${id}`, formData);
     console.log(response.data);

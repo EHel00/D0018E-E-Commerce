@@ -15,9 +15,9 @@
                 </tr>
                    
             </tbody>
-            <div id="Buy">
-                        <h2 >Total Price: {{ TotalPrice }}</h2>        
-                        <button @click ="handleSubmit()" >Checkout</button>
+            <div id="Buy" >
+                        <h2 >Total Price: {{ TotalPrice }}</h2>
+                        <button @click ="handleSubmit()" >Checkout</button> 
             </div>
             
 
@@ -37,9 +37,9 @@ import { onMounted, ref, watch } from 'vue';
 import apiClient from '@/config/axios';
 import router from '@/router';
 
-const products = ref([])
-let TotalPrice = ref()
-
+const products = ref([]);
+let TotalPrice = ref();
+let outofstock = ref();
 
 
 
@@ -88,11 +88,23 @@ const getCart = async () => {
 const handleSubmit = async () => {
     try{
     const response = await apiClient.post(`/product/checkOut`);
-    console.log(response)
+    console.log(response.response.data);
     router.push({name: 'HomeCustomer'});
 
     }catch (error){
-        console.log(error);
+        console.log(products._value);
+        for(let i = 0; i < products._value.length; i++ ){
+            if (products._value[i].Product_id == error.response.data.message){
+                console.log(products._value[i].Description);
+                alert(`${products._value[i].chocolate}`+" " + `${products._value[i].Size}` + "g is out of stock");
+
+            }
+        }
+       
+
+        
+
+
 }};
 onMounted(async () => {
     await getCart();
