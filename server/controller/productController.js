@@ -334,7 +334,7 @@ const checkOut = async (req, res) => {
         for (let i = 0; i < data.length; i++) {
             // check if there is enough supply
             if (data[i].SupplyQuantity - data[i].CartQuantity < 0) {
-                throw new Error(`Out of stock ${data[i].Product}`);
+                throw new Error(`${data[i].Product}`);
             }
             // save info
             prod.push(data[i].Product);
