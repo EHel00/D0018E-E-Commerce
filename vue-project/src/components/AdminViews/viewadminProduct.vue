@@ -12,7 +12,8 @@
             <img :src="product.Image" alt="Product Image" />
             <div >
             <input type="number" min="0" v-model="SupplyAmount[product.id]" placeholder="Add Quantity" />
-            <button class="add-to-cart-button"  @click="addSupply(product.id)" >add Product</button>
+            <button class="add-to-cart-button"  @click="addSupply(product.id, product.Quantity)" >add Product</button>
+            <button class="delete-from-cart-button"  @click="deleteProduct(product.id)" >Delete</button>
             </div>
           </div>
         </div>
@@ -24,6 +25,7 @@
       <input type="number" min="0" v-model="formData.Price" placeholder="Price" />
 
       <button type="submit">Add Product</button>
+      
     </div>
   </form>
   </body>
@@ -35,7 +37,20 @@
   import apiClient from '@/config/axios';
   import { RouterLink, useRoute } from 'vue-router';
   import { reactive } from 'vue';
- 
+
+
+const deleteProduct= async (id) => {
+  if(confirm("are you sure you want to delete this product?")){
+    try {
+      console.log(id);
+      // const response = await apiClient.delete(`/product/deleteProduct/${id}`);
+      // console.log(response);
+      // window.location.reload();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
+}
 
 const SupplyAmount = ref({});
   
@@ -48,7 +63,10 @@ const formData = reactive({
 //   Supply: '',
 // });
 const handleSubmit = async () => {
-  
+  const submit = {
+    Size: formData.Size,
+    Price: formData.Price,
+  };
   try {
     if (formData.Size === '' || formData.Price === '') {
       alert('Please fill in all fields');
@@ -59,7 +77,9 @@ const handleSubmit = async () => {
       return;
     }
     const id = $route.params.id;
-    const response = await apiClient.post(`/product/createProduct/${id}`, formData);
+    console.log(id)
+    console.log(submit);
+    const response = await apiClient.post(`/product/createProduct/${id}`, submit);
     console.log(response.data);
     window.location.reload();
   } catch (error) {
@@ -67,11 +87,16 @@ const handleSubmit = async () => {
   }
 };
 
-  const addSupply = async (id) =>  {
+  const addSupply = async (id, CurrentQuantity) =>  {
     const Supplyadd = {
-      Quantity: SupplyAmount.value[id],
+      Quantity: SupplyAmount.value[id]
     }
       try {
+        if(Supplyadd.Quantity + CurrentQuantity < 0) {
+          alert('Quantity can not be bellow 0');
+          return;
+        }
+
         console.log(Supplyadd);
         const response = await apiClient.post(`/product/updateSupply/${id}`, Supplyadd);
         console.log(response);
@@ -164,7 +189,16 @@ const handleSubmit = async () => {
   border: none;
   border-radius: 5px;
 }
-
+.delete-from-cart-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: red ;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
 .add-to-cart-button:hover {
   background-color: #218838;
 }
