@@ -3,7 +3,6 @@ const {
     getProducts, 
     getProduct,
     createCategory,
-    createProduct,
     updateSupply,
     getAllSupply,
     getSupplyByProductId,
@@ -11,7 +10,6 @@ const {
     addOne,
     getCategory,
     getCategories,
-    getProductsByCategory,
     getProductsInCategory,
     createProductID,
     addToCart,
@@ -30,8 +28,6 @@ const router = express.Router();
 // product
 router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
-router.get("/getProductsByCategory/:id", getProductsByCategory);
-router.post("/createProduct", validateToken, authenticate, createProduct);
 router.post("/createProduct/:id", validateToken, authenticate, createProductID);
 // supply
 router.post("/updateSupply", validateToken, authenticate, updateSupply);

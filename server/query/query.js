@@ -19,7 +19,7 @@ const Query = {
     insertCategory: 'INSERT INTO Category (description, image) VALUES (?, ?)',
     getCategory: 'SELECT * FROM Category WHERE CategoryID = ?',
     getAllCategories: 'SELECT * FROM Category',
-    getAllProductsInC: 'SELECT Category.Description, Category.Image, Product.Size, Product.Price, Product.idProduct FROM Category JOIN Product ON Category.CategoryID = Product.Category WHERE Category.CategoryID = ? ORDER BY Product.Size ASC',
+    getAllProductsInC: 'SELECT Category.Description, Category.Image, Product.Size, Product.Price, Product.idProduct, Supply.Quantity FROM Category JOIN Product ON Category.CategoryID = Product.Category JOIN Supply ON Supply.Product = Product.idProduct WHERE Category.CategoryID = ? ORDER BY Product.Size ASC',
 
     //User Queries
     selectUser: 'SELECT * FROM User;',
