@@ -62,6 +62,8 @@ const changeStatus = async(order) => {
     console.log(id);
     const response = await apiClient.put(`/user/updateOrderStatus`,id);
     console.log(response);
+    window.location.reload();
+    
 }
 
 const showDetails = async(id) => {
