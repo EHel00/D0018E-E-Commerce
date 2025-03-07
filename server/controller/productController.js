@@ -15,17 +15,7 @@ const getProducts = (req, res) => {
   });
 };
 
-const getProductsByCategory = (req, res) => {
-    logger.info(`${req.method} ${req.originalUrl}, fetching products`);
-        db.query(QUERY.getProductsByCategory, [req.params.id], (error, results) => {
-        if (!results) {
-            res.status(404).json({message: 'Products not found'});
-        } else {
-            logger.info(results[0]);
-            res.status(200).json({message: 'Products found', data: results});
-    }
-  });
-}
+
 
 const getProduct = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching product`);
@@ -37,6 +27,40 @@ const getProduct = (req, res) => {
     }
   });
 };
+
+const deleteProduct = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, deleting product`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.deleteProduct, [req.params.id]);
+        res.status(200).json({message: 'Product deleted'});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
+
+const updateProduct = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating product`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.updateProduct, [req.body.Size, req.body.Price, req.params.id]);
+        res.status(200).json({message: 'Product updated'});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
 
 const createCategory = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, creating Category`);
@@ -79,26 +103,6 @@ const getProductsInCategory = (req, res) => {
             res.status(404).json({message: 'Products not found'});
         } else {
             res.status(200).json({message: 'Products found', data: results});
-        }
-    });
-}
-
-const createProduct = (req, res) => {
-    logger.info(`${req.method} ${req.originalUrl}, creating Product`);
-    db.query(QUERY.insertProduct, Object.values(req.body), (error, results) => { 
-        if (!results) {
-            logger.error(error.message);
-            res.status(400).json({message: 'Error'});
-        } else {
-            db.query(QUERY.insertSupply, [results.insertId, 0], (error, results) => {
-                if (!results) {
-                    logger.error(error.message);
-                    res.status(400).json({message: 'Error'});
-                } else {
-                    res.status(201).json({message: 'Product Created'});
-                }           
-            })
-            
         }
     });
 }
@@ -421,8 +425,7 @@ const getGrades = async (req, res) => {
 module.exports = {
     getProducts, 
     getProduct, 
-    createCategory, 
-    createProduct, 
+    createCategory,  
     updateSupply, 
     getAllSupply, 
     getSupplyByProductId, 
@@ -430,7 +433,6 @@ module.exports = {
     addOne, 
     getCategories, 
     getCategory, 
-    getProductsByCategory,
     getProductsInCategory,
     createProductID,
     addToCart,
