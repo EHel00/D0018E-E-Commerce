@@ -149,37 +149,23 @@ const getAllSupply = (req, res) => {
     });
 }
 
-// product, supply
-const updateSupply = (req, res) => {
-    logger.info(`${req.method} ${req.originalUrl}, searching Supply`);
-    const values = Object.values(req.body);
-    // find if product is in supply
-    db.query(QUERY.getSupplyByProductId, values, (error, results) => {
-        if (!results[0]) {
-            logger.info("inserting supply");
-            // if not, insert
-            db.query(QUERY.insertSupply, values, (error, results) => { 
-                if (!results) {
-                    logger.error(error.message);
-                    res.status(400).json({message: 'Error'});
-                } else {
-                    res.status(200).json({message: 'Supply Created', data: results});
-                }
-            });
-        } else {
-            logger.info("updating supply");
-            // if yes, update
-            db.query(QUERY.updateSupply, [values[1], values[0]], (error, results) => { 
-                if (!results) {
-                    logger.error(error.message);
-                    res.status(400).json({message: 'Error'});
-                } else {
-                    res.status(201).json({message: 'Supply Updated', data: results});
-                }
-            });
+
+const updateSupply = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, updating Supply`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const sup = await con.query(QUERY.getSupplyByProductId, [req.params.id]);
+        const result = await con.query(QUERY.updateSupply, [sup[0].Quantity + req.body.Quantity, req.params.id]);
+        res.status(200).json({message: 'Supply updated'});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: error.message});
+    } finally {
+        if (con) {
+            await con.release();
         }
-    })
-    
+    }    
 }
 
 const buyOne = (req, res) => {
