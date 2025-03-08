@@ -4,8 +4,8 @@ const Query = {
     getProductById: 'SELECT * FROM Product WHERE idProduct = ?',
     getProductPrice: 'SELECT Product.Price FROM Product WHERE idProduct = ?',
     insertProduct: 'INSERT INTO Product(Category, Size, Price) VALUES (?, ?, ?)',
-    //updateProduct: 'UPDATE Product (Category, Size, Price) WHERE idProduct = ?',
-    deleteProduct: 'DELETE FROM Product WHERE id = ?',
+    updateProduct: 'UPDATE Product SET Size = ?, Price = ? WHERE idProduct = ?',
+    deleteProduct: 'DELETE FROM Product WHERE idProduct = ?',
     getProductsByCategory: 'SELECT * FROM Product WHERE Category = ?',
     updateProduct: 'UPDATE Product SET Size = ?, Price = ? WHERE idProduct = ?',
     //supply
@@ -18,6 +18,7 @@ const Query = {
     //Category Queries
     insertCategory: 'INSERT INTO Category (description, image) VALUES (?, ?)',
     getCategory: 'SELECT * FROM Category WHERE CategoryID = ?',
+    deleteCategory: 'DELETE FROM Category WHERE CategoryID = ?',
     getAllCategories: 'SELECT * FROM Category',
     getAllProductsInC: 'SELECT Category.Description, Category.Image, Product.Size, Product.Price, Product.idProduct, Supply.Quantity FROM Category JOIN Product ON Category.CategoryID = Product.Category JOIN Supply ON Supply.Product = Product.idProduct WHERE Category.CategoryID = ? ORDER BY Product.Size ASC',
 
@@ -34,8 +35,8 @@ const Query = {
     insertRole: 'INSERT INTO Role (User, Role) VALUES (?, ?)',
 
     //Order Queries
-    addOrder: 'INSERT INTO Orders (OrderHistory, Product, Quantity) VALUES (?, ?, ?)',
-    getOrder: 'SELECT Orders.Quantity, Product.Price, Product.Size, Category.Description FROM Orders JOIN Product ON Orders.Product = Product.idProduct JOIN Category ON Product.Category = Category.CategoryID WHERE OrderHistory = ?',
+    addOrder: 'INSERT INTO Orders (OrderHistory, Quantity, Description, Size, Price) VALUES (?, ?, ?, ?, ?)',
+    getOrder: 'SELECT * FROM Orders WHERE OrderHistory = ?',
 
     createOrderHistory: 'INSERT INTO OrderHistory (User, Date, Status) VALUES (?, ?, ?)',
     getOrderHistory: 'SELECT * FROM OrderHistory',
@@ -51,7 +52,7 @@ const Query = {
     updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
     removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
     removeUserCart: 'DELETE FROM ShoppingCart WHERE User = ?',
-    getCartAndSupply: 'SELECT ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity, ShoppingCart.idShoppingCart, ShoppingCart.User, Supply.idSupply, ShoppingCart.Product FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product WHERE ShoppingCart.User = ?',
+    getCartAndSupply: 'SELECT *, ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product JOIN Product ON Product.idProduct = ShoppingCart.Product JOIN Category ON Category.CategoryID = Product.Category WHERE ShoppingCart.User = ?',
 
     //Grade Queries
     getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName as User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
