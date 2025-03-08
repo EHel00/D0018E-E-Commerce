@@ -18,6 +18,8 @@ const {
     checkOut,
     addGrade,
     getGrades,
+    deleteCategory,
+    deleteProduct,
 }
 = require("../controller/productController");
 const validateToken = require("../utility/validateToken");
@@ -29,6 +31,7 @@ const router = express.Router();
 router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.post("/createProduct/:id", validateToken, authenticate, createProductID);
+router.post("/deleteProduct/:id", validateToken, authenticate, deleteProduct);
 // supply
 router.post("/updateSupply/:id", validateToken, authenticate, updateSupply);
 
@@ -42,6 +45,7 @@ router.put("/addOne/:id", validateToken, authenticate, addOne);
 router.get("/getCategory/:id", getCategory);
 router.get("/getCategories", getCategories);
 router.get("/getProductsInCategory/:id", getProductsInCategory);
+router.post("/deleteCategory/:id", validateToken, authenticate, deleteCategory);
 
 router.post("/createCategory", validateToken, authenticate, createCategory);
 

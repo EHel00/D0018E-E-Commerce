@@ -74,6 +74,23 @@ const createCategory = (req, res) => {
     });
 }
 
+const deleteCategory = async(req, res) => {
+    logger.info(`${req.method} ${req.originalUrl}, deleting category`);
+    let con;
+    try {
+        con = await db.promise().getConnection();
+        const result = await con.query(QUERY.deleteProduct, [req.params.id]);
+        res.status(200).json({message: 'Product deleted'});
+    } catch (error) {
+        logger.error(error.message);
+        res.status(400).json({message: 'Error'});
+    } finally {
+        if (con) {
+            await con.release();
+        }
+    }
+}
+
 const getCategories = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Categorys`);
     db.query(QUERY.getAllCategories, (error, results) => {
@@ -328,7 +345,7 @@ const checkOut = async (req, res) => {
             // update supply
             await con.query(QUERY.updateSupply, [data[i].SupplyQuantity - data[i].CartQuantity, data[i].Product]);
             // add to order table
-            await con.query(QUERY.addOrder, [OrderHistory, data[i].Product, data[i].CartQuantity]);
+            await con.query(QUERY.addOrder, [OrderHistory, data[i].CartQuantity, data[i].Description, data[i].Size, data[i].Price]);
             // remove from cart
             await con.query(QUERY.removeFromCart, [req.userId, data[i].Product]);
         }
@@ -427,4 +444,6 @@ module.exports = {
     checkOut,
     addGrade,
     getGrades,
+    deleteCategory,
+    deleteProduct
 };
