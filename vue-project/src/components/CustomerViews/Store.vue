@@ -4,15 +4,15 @@
     <div class="store-container">
       <tr v-for="Category in Categories" :key="Category.id">
         <RouterLink :to="{ name: 'viewProduct', params: { id: Category.id }}" class="view_product_button">
-        <td class="store-box">
+          <td class="store-box">
           <td> {{ Category.Description }}</td>
           <td> {{ Category.Image }}</td>
           <td>
-            
-              <button class="store-button">View Product</button>
+
+            <button class="store-button">View Product</button>
           </td>
 
-        </td>
+          </td>
         </RouterLink>
       </tr>
     </div>
@@ -30,23 +30,22 @@ import apiClient from '@/config/axios'
 const Categories = ref([]);
 
 onMounted(async () => {
-    try {
-      const response = await apiClient.get(`/product/getCategories`); 
-      console.log(response.data.data.length);
-      for(let i = 0; i < response.data.data.length; i++) {
-        let Category = {
-          id: response.data.data[i].CategoryID,
-          Description: response.data.data[i].Description,
-          Image: response.data.data[i].Image,
-        }
-        console.log(Category);
-        Categories.value.push(Category);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+  try {
+    const response = await apiClient.get(`/product/getCategories`);
+    console.log(response.data.data.length);
+    for (let i = 0; i < response.data.data.length; i++) {
+      let Category = {
+        id: response.data.data[i].CategoryID,
+        Description: response.data.data[i].Description,
+        Image: response.data.data[i].Image,
       }
-    });
-
+      console.log(Category);
+      Categories.value.push(Category);
+    }
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+});
 
 </script>
 

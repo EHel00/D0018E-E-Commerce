@@ -12,6 +12,7 @@ const {
     getCategories,
     getProductsInCategory,
     createProductID,
+    updateProduct,
     addToCart,
     getCart,
     removeFromCart,
@@ -32,6 +33,8 @@ router.get("/getProducts", getProducts);
 router.get("/getProduct/:id", getProduct);
 router.post("/createProduct/:id", validateToken, authenticate, createProductID);
 router.post("/deleteProduct/:id", validateToken, authenticate, deleteProduct);
+router.put("/updateProduct/:id", validateToken, authenticate, updateProduct);
+
 // supply
 router.post("/updateSupply/:id", validateToken, authenticate, updateSupply);
 

@@ -144,6 +144,7 @@ const createProductID = (req, res) => {
     });
 }
 
+
 const getSupplyByProductId = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Supply`);
     db.query(QUERY.getSupplyByProductId, [req.params.id], (error, results) => {
@@ -166,14 +167,15 @@ const getAllSupply = (req, res) => {
     });
 }
 
-
 const updateSupply = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, updating Supply`);
     let con;
     try {
         con = await db.promise().getConnection();
         const sup = await con.query(QUERY.getSupplyByProductId, [req.params.id]);
-        const result = await con.query(QUERY.updateSupply, [sup[0].Quantity + req.body.Quantity, req.params.id]);
+
+        const result = await con.query(QUERY.updateSupply, [sup[0][0].Quantity + req.body.Quantity, parseInt(req.params.id)]);
+
         res.status(200).json({message: 'Supply updated'});
     } catch (error) {
         logger.error(error.message);
@@ -184,6 +186,8 @@ const updateSupply = async(req, res) => {
         }
     }    
 }
+
+
 
 const buyOne = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, searching Supply`);
@@ -438,6 +442,7 @@ module.exports = {
     getCategory, 
     getProductsInCategory,
     createProductID,
+    updateProduct,
     addToCart,
     getCart,
     removeFromCart,

@@ -59,7 +59,7 @@
     try {
       const response = await apiClient.get('/user/getOrderHistoryCustomer');
       console.log(response.data);
-  
+
       for (let i = 0; i < response.data.OrderHistory.length; i++) {
         let orderHistory = {
           Date: response.data.OrderHistory[i].Date.split('T')[0],
@@ -68,7 +68,6 @@
         };
         ordersHistory.value.push(orderHistory);
       }
-  
       for (let j = 0; j < response.data.Order.length; j++) {
         let orderArray = [];
         for (let k = 0; k < response.data.Order[j].length; k++) {
@@ -84,7 +83,6 @@
         console.log(orderArray);
         orders.value.push(orderArray);
       }
-  
       console.log(ordersHistory.value);
       console.log(orders.value);
     } catch (error) {
@@ -122,10 +120,6 @@
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-  }
-  
-  .order-details-table th {
- 
   }
   
   tr {
