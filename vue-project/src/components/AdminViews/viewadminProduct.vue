@@ -13,6 +13,13 @@
             <div >
             <input type="number" min="0" v-model="SupplyAmount[product.id]" placeholder="Add Quantity" />
             <button class="add-to-cart-button"  @click="addSupply(product.id, product.Quantity)" >add Product</button>
+            
+            <button class="update-button" @click="toggleUpdate(product.id)">Update</button>
+            <div v-if="showUpdate[product.id]" class="update-inputs">
+              <input type="number" min="0" v-model="updateData[product.id].Size" placeholder="Update Size" />
+              <input type="number" min="0" v-model="updateData[product.id].Price" placeholder="Update Price" />
+              <button class="save-update-button" @click="updateProduct(product.id)">Save</button>
+            </div>
             <button class="delete-from-cart-button"  @click="deleteProduct(product.id)" >Delete</button>
             </div>
           </div>
@@ -38,9 +45,15 @@
   import { RouterLink, useRoute } from 'vue-router';
   import { reactive } from 'vue';
 
+const showUpdate = ref({});
+const updateData = ref({});
+const SupplyAmount = ref({});
+const $route = useRoute();
+const Products = ref([]);
 
-const deleteProduct= async (id) => {
-  if(confirm("are you sure you want to delete this product?")){
+
+const deleteProduct = async (id) => {
+  if (confirm("are you sure you want to delete this product?")) {
     try {
       console.log(id);
       // const response = await apiClient.delete(`/product/deleteProduct/${id}`);
@@ -52,7 +65,6 @@ const deleteProduct= async (id) => {
   }
 }
 
-const SupplyAmount = ref({});
   
 const formData = reactive({
   Size: '',
@@ -87,55 +99,84 @@ const handleSubmit = async () => {
   }
 };
 
-  const addSupply = async (id, CurrentQuantity) =>  {
-    const Supplyadd = {
-      Quantity: SupplyAmount.value[id]
+const addSupply = async (id, CurrentQuantity) => {
+  const Supplyadd = {
+    Quantity: SupplyAmount.value[id]
+  }
+  try {
+    if (Supplyadd.Quantity + CurrentQuantity < 0) {
+      alert('Quantity can not be bellow 0');
+      return;
     }
-      try {
-        if(Supplyadd.Quantity + CurrentQuantity < 0) {
-          alert('Quantity can not be bellow 0');
-          return;
-        }
+    console.log(Supplyadd);
+    const response = await apiClient.post(`/product/updateSupply/${id}`, Supplyadd);
+    console.log(response);
+    window.location.reload();
+  } catch (error) {
+    console.error('Error adding supply:', error);
+  }
+};
 
-        console.log(Supplyadd);
-        const response = await apiClient.post(`/product/updateSupply/${id}`, Supplyadd);
-        console.log(response);
-        window.location.reload();
-      } catch (error) {
-        console.error('Error adding supply:', error);
-      }
+
+const toggleUpdate = (id) => {
+  showUpdate.value[id] = !showUpdate.value[id];
+  if (!updateData.value[id]) {
+    updateData.value[id] = {
+      Size: '',
+      Price: ''
     };
-  
-  const $route = useRoute();
-  const Products = ref([]);
-  
-  
-  
-  onMounted(async () => {
-    try {
-      const id = $route.params.id;
-      console.log(id);
-      const response = await apiClient.get(`/product/getProductsInCategory/${id}`);
-      console.log(response.data.data);
-      for(let i = 0; i < response.data.data.length; i++) {
-        let product = {
+  }
+};
+
+const updateProduct = async (id) => {
+  const update = {
+    Size: updateData.value[id].Size,
+    Price: updateData.value[id].Price,
+  };
+  try {
+    if (update.Size === '' || update.Price === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+    if (update.Size < 0 || update.Price < 0) {
+      alert('Please enter a positive number');
+      return;
+    }
+    console.log(update);
+    console.log(id);
+    const response = await apiClient.put(`/product/updateProduct/${id}`, update);
+    //console.log(response.data);
+    window.location.reload();
+  } catch (error) {
+    console.error('Error updating product:', error);
+  }
+};
+
+onMounted(async () => {
+  try {
+    const id = $route.params.id;
+    console.log(id);
+    const response = await apiClient.get(`/product/getProductsInCategory/${id}`);
+    console.log(response.data.data);
+    for (let i = 0; i < response.data.data.length; i++) {
+      let product = {
         id: response.data.data[i].idProduct,
         Description: response.data.data[i].Description,
         Image: response.data.data[i].Image,
-        Price:  response.data.data[i].Price,
-        Size:  response.data.data[i].Size,
+        Price: response.data.data[i].Price,
+        Size: response.data.data[i].Size,
         Quantity: response.data.data[i].Quantity,
       };
       console.log(product);
       Products.value.push(product);
-      }
-     
-   
-    } catch (error) {
-      console.error('Error fetching product:', error);
     }
-  
-  });
+
+
+  } catch (error) {
+    console.error('Error fetching product:', error);
+  }
+
+});
     </script>
     
     <style scoped>
@@ -146,7 +187,26 @@ const handleSubmit = async () => {
   gap: 20px;
   padding: 20px;
 }
-
+.update-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(70, 71, 49);
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.save-update-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(29, 25, 66);
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
 .product-frame {
   border: 1px solid #ccc;
   border-radius: 10px;

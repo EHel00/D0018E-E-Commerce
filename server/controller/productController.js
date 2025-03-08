@@ -127,6 +127,7 @@ const createProductID = (req, res) => {
     });
 }
 
+
 const getSupplyByProductId = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, fetching Supply`);
     db.query(QUERY.getSupplyByProductId, [req.params.id], (error, results) => {
@@ -168,6 +169,8 @@ const updateSupply = async(req, res) => {
         }
     }    
 }
+
+
 
 const buyOne = (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, searching Supply`);
@@ -422,6 +425,7 @@ module.exports = {
     getCategory, 
     getProductsInCategory,
     createProductID,
+    updateProduct,
     addToCart,
     getCart,
     removeFromCart,
