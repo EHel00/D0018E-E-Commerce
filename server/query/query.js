@@ -7,7 +7,7 @@ const Query = {
     //updateProduct: 'UPDATE Product (Category, Size, Price) WHERE idProduct = ?',
     deleteProduct: 'DELETE FROM Product WHERE id = ?',
     getProductsByCategory: 'SELECT * FROM Product WHERE Category = ?',
-
+    updateProduct: 'UPDATE Product SET Size = ?, Price = ? WHERE idProduct = ?',
     //supply
     insertSupply: 'INSERT INTO Supply (Product, Quantity) VALUES (?, ?)',
     updateSupply: 'UPDATE Supply SET Quantity = ? WHERE Product = ?',

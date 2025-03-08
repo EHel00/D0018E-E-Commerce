@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <AdminNavbar />
-        
         <div class="content">
             <h1>Order List</h1>
             <table>
@@ -12,11 +11,9 @@
                         <th>Date</th>
                         <th>Total Price</th>
                         <th>Status</th>
-
-                       
                     </tr>
                 </thead>
-                <tbody v-for = "order in orders" :key="order.orderid">
+                <tbody v-for="order in orders" :key="order.orderid">
                     <tr>
                         <td>{{order.orderid}}</td>
                         <td>{{order.user}}</td>
@@ -24,22 +21,20 @@
                         <td>{{order.totalPrice}}</td>
                         <td>{{order.status}}</td>
                         <td>
-                            <button @click="showDetails(order.orderid)">More info</button> 
+                            <button @click="showDetails(order.orderid)">More info</button>
                         </td>
-                        <td> <button @click="changeStatus(order)" >Change status</button> </td>
+                        <td> <button @click="changeStatus(order)">Change status</button> </td>
                     </tr>
                     <tr v-if="isActive.get(order.orderid)" v-for="(orderDetail, index) in orderDetails" :key="index">
                         <td colspan="6">
-                        <div class="order-detail">
-                            <p>Description: {{ orderDetail.Description }}</p>
-                            <p>Size: {{ orderDetail.Size }}</p>
-                            <p>Price: {{orderDetail.Price }}</p>
-                            <p>Quantity: {{orderDetail.Quantity }}</p>
-                        </div>
+                            <div class="order-detail">
+                                <p>Description: {{ orderDetail.Description }}</p>
+                                <p>Size: {{ orderDetail.Size }}</p>
+                                <p>Price: {{orderDetail.Price }}</p>
+                                <p>Quantity: {{orderDetail.Quantity }}</p>
+                            </div>
                         </td>
-                </tr>
-                    
-
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -63,17 +58,20 @@ const changeStatus = async(order) => {
     const response = await apiClient.put(`/user/updateOrderStatus`,id);
     console.log(response);
     window.location.reload();
-    
 }
 
-const showDetails = async(id) => {
+const showDetails = async (id) => {
     console.log(id);
-    if(isActive.value.get(id)){
+    if (isActive.value.get(id)) {
         isActive.value.set(id, false);
     } else {
         isActive.value.set(id, true);
         orderDetails.value = [];
-        const response = await apiClient.get(`/user/getOrderDetails`, {params: {idOrderHistory: id}});
+        const response = await apiClient.get(`/user/getOrderDetails`, {
+            params: {
+                idOrderHistory: id
+            }
+        });
         console.log(response);
         for (let i = 0; i < response.data.data.length; i++) {
             let orderDetail = {
@@ -84,14 +82,10 @@ const showDetails = async(id) => {
             }
             console.log(orderDetail);
             orderDetails.value.push(orderDetail);
-            
             console.log(orderDetails);
-            
-
         }
-        
     }
- }
+}
    
 
 
@@ -100,7 +94,7 @@ const showDetails = async(id) => {
     
     
 // }
-onMounted (async () => {
+onMounted(async () => {
     //await fetchOrders();
     const response = await apiClient.get('/user/getOrderHistoryAdmin');
     console.log(response.data.data);
@@ -116,7 +110,6 @@ onMounted (async () => {
         //isActive.value.set(i, false);
         orders.value.push(order);
     }
-
 });
 </script>
 <style>
