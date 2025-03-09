@@ -44,14 +44,13 @@ const handleSubmit = async () => {
   try {
     const response = await apiClient.post('/product/createCategory', formData);
     console.log(response.data);
-    fetchCategories();
+    router.push({name: 'admin'});
   } catch (error) {
     console.error('Error adding category:', error);
-
   }
 };
 
-const fetchCategories = async () => {
+onMounted(async () => {
   try {
     const response = await apiClient.get(`/product/getCategories`);
     console.log(response.data.data);
@@ -67,9 +66,6 @@ const fetchCategories = async () => {
   } catch (error) {
     console.error('Error fetching categories:', error);
   }
-}
-onMounted(async () => {
-  fetchCategories();
 });
 
 const deleteCategory = async (Categoryid) => {
