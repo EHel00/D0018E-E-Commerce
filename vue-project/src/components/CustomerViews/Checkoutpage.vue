@@ -66,7 +66,7 @@ const getCart = async () => {
         console.log(response.data.price[i])
         let product = {
             chocolate: response.data.data[i].Description,
-            Quantity: response.data.data[i].Quantity,
+            Quantity: response.data.data[i].Amount,
             Image: response.data.data[i].Image,
             Price_single_product: response.data.data[i].Price,
             Price_products: response.data.price[i],
@@ -81,10 +81,8 @@ const getCart = async () => {
 const handleSubmit = async () => {
     try {
         const response = await apiClient.post(`/product/checkOut`);
-        console.log(response.response.data);
-        router.push({
-            name: 'HomeCustomer'
-        });
+        console.log(response);
+        router.push({name: 'HomeCustomer'});
     } catch (error) {
         console.log(products._value);
         for (let i = 0; i < products._value.length; i++) {

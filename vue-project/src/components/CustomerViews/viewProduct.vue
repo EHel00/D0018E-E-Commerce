@@ -72,6 +72,10 @@ const commentSubmit = async (commentData) => {
   }
 }
 const handleSubmit = async (product) =>  {
+  if(product.Quantity<=0){
+    alert("Product is out of stock");
+    return;
+  }
     try {
       
       console.log(product.id);
