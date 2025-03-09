@@ -30,14 +30,18 @@ CREATE TABLE `Category` (
   `Image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`CategoryID`),
   UNIQUE KEY `Description_UNIQUE` (`Description`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Category`
 --
 
-
+LOCK TABLES `Category` WRITE;
+/*!40000 ALTER TABLE `Category` DISABLE KEYS */;
+INSERT INTO `Category` VALUES (1,'Milk chocolate','Beautiful');
+/*!40000 ALTER TABLE `Category` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `Grade`
@@ -55,16 +59,20 @@ CREATE TABLE `Grade` (
   PRIMARY KEY (`idGrade`),
   KEY `Grade_User_FK_idx` (`User`),
   KEY `Grade_Category_FK_idx` (`Category`),
-  CONSTRAINT `Grade_Category_FK` FOREIGN KEY (`Category`) REFERENCES `Category` (`CategoryID`),
+  CONSTRAINT `Grade_Category_FK` FOREIGN KEY (`Category`) REFERENCES `Category` (`CategoryID`) ON DELETE CASCADE,
   CONSTRAINT `Grade_User_FK` FOREIGN KEY (`User`) REFERENCES `User` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Grade`
 --
 
-
+LOCK TABLES `Grade` WRITE;
+/*!40000 ALTER TABLE `Grade` DISABLE KEYS */;
+INSERT INTO `Grade` VALUES (1,2,1,4,'Amazing product'),(2,2,1,2,'Not sure about it'),(3,2,1,5,'The best'),(4,3,1,5,'Absolute greatest'),(5,3,1,1,'Worst ive had');
+/*!40000 ALTER TABLE `Grade` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `OrderHistory`
@@ -82,14 +90,18 @@ CREATE TABLE `OrderHistory` (
   PRIMARY KEY (`idOrderHistory`),
   KEY `OrderHistory_User_FK_idx` (`User`),
   CONSTRAINT `OrderHistory_User_FK` FOREIGN KEY (`User`) REFERENCES `User` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `OrderHistory`
 --
 
-
+LOCK TABLES `OrderHistory` WRITE;
+/*!40000 ALTER TABLE `OrderHistory` DISABLE KEYS */;
+INSERT INTO `OrderHistory` VALUES (1,2,'2025-03-08 13:51:39',70.00,'Pending'),(3,3,'2025-03-09 00:30:06',180.00,'Pending'),(4,3,'2025-03-09 00:32:02',120.00,'Pending'),(5,3,'2025-03-09 00:34:55',50.00,'Pending'),(6,3,'2025-03-09 00:40:28',30.00,'Pending'),(7,3,'2025-03-09 00:42:23',70.00,'Pending'),(8,3,'2025-03-09 00:42:55',30.00,'Pending'),(9,3,'2025-03-09 00:43:50',20.00,'Pending'),(10,3,'2025-03-09 00:44:20',20.00,'Pending'),(11,3,'2025-03-09 00:47:11',30.00,'Pending'),(12,3,'2025-03-09 00:50:15',30.00,'Pending'),(13,2,'2025-03-09 12:42:23',50.00,'Pending'),(14,1,'2025-03-09 12:46:18',50.00,'Pending'),(15,2,'2025-03-09 13:00:52',50.00,'Pending');
+/*!40000 ALTER TABLE `OrderHistory` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `Orders`
@@ -108,14 +120,18 @@ CREATE TABLE `Orders` (
   PRIMARY KEY (`idOrder`),
   KEY `Order_OrderHistory_FK_idx` (`OrderHistory`),
   CONSTRAINT `Order_OrderHistory_FK` FOREIGN KEY (`OrderHistory`) REFERENCES `OrderHistory` (`idOrderHistory`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Orders`
 --
 
-
+LOCK TABLES `Orders` WRITE;
+/*!40000 ALTER TABLE `Orders` DISABLE KEYS */;
+INSERT INTO `Orders` VALUES (1,1,2,'Milk chocolate',200,35.00),(2,3,3,'Milk chocolate',600,60.00),(3,4,2,'Milk chocolate',600,60.00),(4,5,1,'Dark Chocolate',100,20.00),(5,5,1,'Dark Chocolate',200,30.00),(6,6,1,'Dark Chocolate',200,30.00),(7,7,2,'Dark Chocolate',100,20.00),(8,7,1,'Dark Chocolate',200,30.00),(9,8,1,'Dark Chocolate',200,30.00),(10,9,1,'Dark Chocolate',100,20.00),(11,10,1,'Dark Chocolate',100,20.00),(12,11,1,'Dark Chocolate',200,30.00),(13,12,1,'Dark Chocolate',200,30.00),(14,13,1,'Milk chocolate',400,50.00),(15,14,1,'Milk chocolate',400,50.00),(16,15,1,'Milk chocolate',400,50.00);
+/*!40000 ALTER TABLE `Orders` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `Product`
@@ -132,14 +148,18 @@ CREATE TABLE `Product` (
   PRIMARY KEY (`idProduct`),
   KEY `Product_Category_FK_idx` (`Category`) /*!80000 INVISIBLE */,
   CONSTRAINT `Product_Category_FK` FOREIGN KEY (`Category`) REFERENCES `Category` (`CategoryID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Product`
 --
 
-
+LOCK TABLES `Product` WRITE;
+/*!40000 ALTER TABLE `Product` DISABLE KEYS */;
+INSERT INTO `Product` VALUES (2,1,400,50.00),(3,1,600,60.00);
+/*!40000 ALTER TABLE `Product` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `Role`
@@ -155,7 +175,7 @@ CREATE TABLE `Role` (
   PRIMARY KEY (`RoleID`),
   KEY `Role_User_FK_idx` (`User`),
   CONSTRAINT `Role_User_FK` FOREIGN KEY (`User`) REFERENCES `User` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +184,7 @@ CREATE TABLE `Role` (
 
 LOCK TABLES `Role` WRITE;
 /*!40000 ALTER TABLE `Role` DISABLE KEYS */;
-INSERT INTO `Role` VALUES (1,1,'admin');
+INSERT INTO `Role` VALUES (1,1,'admin'),(2,2,'customer'),(3,3,'customer');
 /*!40000 ALTER TABLE `Role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,14 +205,18 @@ CREATE TABLE `ShoppingCart` (
   KEY `ShoppingCart_Productr_FK_idx` (`Product`),
   CONSTRAINT `ShoppingCart_Productr_FK` FOREIGN KEY (`Product`) REFERENCES `Product` (`idProduct`) ON DELETE CASCADE,
   CONSTRAINT `ShoppingCart_User_FK` FOREIGN KEY (`User`) REFERENCES `User` (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `ShoppingCart`
 --
 
-
+LOCK TABLES `ShoppingCart` WRITE;
+/*!40000 ALTER TABLE `ShoppingCart` DISABLE KEYS */;
+INSERT INTO `ShoppingCart` VALUES (26,1,2,2),(28,3,2,2),(30,2,2,2);
+/*!40000 ALTER TABLE `ShoppingCart` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `Supply`
@@ -210,14 +234,18 @@ CREATE TABLE `Supply` (
   KEY `Supply_Product_FK_idx` (`Product`),
   CONSTRAINT `Supply_Product_FK` FOREIGN KEY (`Product`) REFERENCES `Product` (`idProduct`) ON DELETE CASCADE,
   CONSTRAINT `Supply_chk_1` CHECK ((`Quantity` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `Supply`
 --
 
-
+LOCK TABLES `Supply` WRITE;
+/*!40000 ALTER TABLE `Supply` DISABLE KEYS */;
+INSERT INTO `Supply` VALUES (2,2,1),(3,3,35);
+/*!40000 ALTER TABLE `Supply` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `User`
@@ -236,7 +264,7 @@ CREATE TABLE `User` (
   `Address` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `Email_UNIQUE` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +273,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'admin@admin.se','$2b$10$0KGOt0XxStewk8moX4u.EeNbr77XQyb/8svu88sfaiTvZ46m.cPoW','1234','admin','admin','admin');
+INSERT INTO `User` VALUES (1,'admin@admin.se','$2b$10$0KGOt0XxStewk8moX4u.EeNbr77XQyb/8svu88sfaiTvZ46m.cPoW','1234','admin','admin','admin'),(2,'cust@test.se','$2b$10$IioRiY34o/389ZQAfBbwSeZgmU/Um9cAmYub9qXpIeUt7PNcR52S6','1234567890','test','tester','testergatan12'),(3,'seb@test.se','$2b$10$GKXbdJoyn2wK81ty8lTDoucg0ciDn.VwvMi5icue9Nk4rKM7cXkDG','1234456778','test','testing','teststreet');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,4 +294,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-08 13:37:12
+-- Dump completed on 2025-03-09 17:09:31

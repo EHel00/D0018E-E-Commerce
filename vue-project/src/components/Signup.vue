@@ -90,7 +90,7 @@ const handleSubmit = async () => {
     };
     try {
       console.log(newUser);
-      const response = await axios.post('http://localhost:3000/api/user/createUser', newUser);
+      const response = await axios.post('http://13.60.197.58/api/user/createUser', newUser);
       console.log(response.data);
       router.push({ name: 'Login' });
     } catch (error) {
