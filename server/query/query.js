@@ -45,17 +45,17 @@ const Query = {
     updateOrderHistoryStatus: 'UPDATE OrderHistory SET Status = ? WHERE idOrderHistory = ?',
 
     //Shopping Cart Queries
-    fancyGetCart: 'SELECT *, Supply.Quantity as Stock, ShoppingCart.Quantity as Amount FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category JOIN Supply on Product.idProduct = Supply.Product WHERE User = ?',
+    fancyGetCart: 'SELECT *, Supply.Quantity AS Stock, ShoppingCart.Quantity AS Amount FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category JOIN Supply on Product.idProduct = Supply.Product WHERE User = ?',
     findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
     findProdInCartByUser: 'SELECT Product FROM ShoppingCart WHERE User = ?',
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
     updateValueInCart: 'UPDATE ShoppingCart SET Quantity = ? WHERE User = ? and Product = ?',
     removeFromCart: 'DELETE FROM ShoppingCart WHERE User = ? AND Product = ?',
     removeUserCart: 'DELETE FROM ShoppingCart WHERE User = ?',
-    getCartAndSupply: 'SELECT *, ShoppingCart.Quantity as CartQuantity, Supply.Quantity as SupplyQuantity FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product JOIN Product ON Product.idProduct = ShoppingCart.Product JOIN Category ON Category.CategoryID = Product.Category WHERE ShoppingCart.User = ?',
+    getCartAndSupply: 'SELECT *, ShoppingCart.Quantity AS CartQuantity, Supply.Quantity AS SupplyQuantity FROM ShoppingCart JOIN Supply ON ShoppingCart.Product = Supply.Product JOIN Product ON Product.idProduct = ShoppingCart.Product JOIN Category ON Category.CategoryID = Product.Category WHERE ShoppingCart.User = ?',
 
     //Grade Queries
-    getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName as User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
+    getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName AS User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
     addGrade: 'INSERT INTO Grade (User, Category, Grade, Comment) VALUES (?, ?, ?, ?)',
     CategoryGrade: 'SELECT Grade.Category,Grade.Grade FROM Grade',
 }
