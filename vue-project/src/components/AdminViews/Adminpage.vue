@@ -32,7 +32,7 @@
   import { ref, onMounted, reactive } from 'vue';
   import { RouterLink } from 'vue-router';
   import apiClient from '@/config/axios'
-
+  import router from '@/router';
 const Categories = ref([]);
 
 const formData = reactive({
@@ -44,12 +44,14 @@ const handleSubmit = async () => {
   try {
     const response = await apiClient.post('/product/createCategory', formData);
     console.log(response.data);
-    window.location.reload();
+    fetchCategories();
   } catch (error) {
     console.error('Error adding category:', error);
+
   }
 };
-onMounted(async () => {
+
+const fetchCategories = async () => {
   try {
     const response = await apiClient.get(`/product/getCategories`);
     console.log(response.data.data);
@@ -65,6 +67,9 @@ onMounted(async () => {
   } catch (error) {
     console.error('Error fetching categories:', error);
   }
+}
+onMounted(async () => {
+  fetchCategories();
 });
 
 const deleteCategory = async (Categoryid) => {
@@ -76,7 +81,7 @@ const deleteCategory = async (Categoryid) => {
       }
       const result = await apiClient.post(`/product/deleteCategory`, Category);
       console.log(result);
-      window.location.reload();
+      router.push(0);
     }catch(error){
       console.log(error, "Failed to delete category");
     }
