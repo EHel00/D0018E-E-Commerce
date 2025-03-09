@@ -12,12 +12,13 @@ app.use(express.json());
 app.use(cors({ 
    
     credentials: true,
-     origin :[
-            'http://localhost:8080',
-            'http://127.0.0.1:8080',
-            'http://localhost:5173',
-            'http://13.60.197.58:8080'
-            ] 
+     origin : 'http://13.60.197.58:8080',
+            // [
+            // 'http://localhost:8080',
+            // 'http://127.0.0.1:8080',
+            // 'http://localhost:5173',
+            
+            // ] 
             // 'http://localhost:5173',
             // 'http://127.0.0.1:8080',
             // 'http://13.53.62.51:8080',
