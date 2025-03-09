@@ -48,7 +48,7 @@ router.put("/addOne/:id", validateToken, authenticate, addOne);
 router.get("/getCategory/:id", getCategory);
 router.get("/getCategories", getCategories);
 router.get("/getProductsInCategory/:id", getProductsInCategory);
-router.post("/deleteCategory/:id", validateToken, authenticate, deleteCategory);
+router.post("/deleteCategory", validateToken, authenticate, deleteCategory);
 
 router.post("/createCategory", validateToken, authenticate, createCategory);
 
