@@ -6,10 +6,12 @@
           <div class="store-box">
             <div> {{ Category.Description }}</div>
             <div> <img :src="Category.Image" class="category-image" /> {{ Category.Image }}</div>
-            <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button"/>
+        
             <button @click="deleteCategory(Category.id)">Delete</button>
             <div>
+              <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button">
               <button class="store-button">View Product</button>
+              </RouterLink>
             </div>
           </div>
       </div>
@@ -30,7 +32,7 @@
   import { ref, onMounted, reactive } from 'vue';
   import { RouterLink } from 'vue-router';
   import apiClient from '@/config/axios'
-
+  import router from '@/router';
 const Categories = ref([]);
 
 const formData = reactive({
@@ -42,12 +44,14 @@ const handleSubmit = async () => {
   try {
     const response = await apiClient.post('/product/createCategory', formData);
     console.log(response.data);
-    window.location.reload();
+    fetchCategories();
   } catch (error) {
     console.error('Error adding category:', error);
+
   }
 };
-onMounted(async () => {
+
+const fetchCategories = async () => {
   try {
     const response = await apiClient.get(`/product/getCategories`);
     console.log(response.data.data);
@@ -63,21 +67,26 @@ onMounted(async () => {
   } catch (error) {
     console.error('Error fetching categories:', error);
   }
+}
+onMounted(async () => {
+  fetchCategories();
 });
 
-const deleteCategory = async (id) => {
-  if (confirm("are you sure you want to delete this product?")){
-  try{
-    console.log("delete", id)
-    
-    const result = await deleteCategory(`/product/deleteCategory`, id);
-    console.log(result)
-  }catch(error){
-    console.log(error, "Failed to delete category")
-
+const deleteCategory = async (Categoryid) => {
+  if (confirm("are you sure you want to delete this category?")){
+    try{
+      console.log("delete", Categoryid);
+      const Category = {
+        id: Categoryid
+      }
+      const result = await apiClient.post(`/product/deleteCategory`, Category);
+      console.log(result);
+      router.push(0);
+    }catch(error){
+      console.log(error, "Failed to delete category");
+    }
   }
-  
-}}
+};
 
 </script>
   
