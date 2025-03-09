@@ -11,6 +11,7 @@
                     <td id="td"> Total product price:{{ product.Price_products }}</td>
                     <td id="td"> Size:{{ product.Size }}</td>
                     <td id="td"> Image:{{ product.Image }}</td>
+                    <td id="td"> Stock: {{ product.Stock }}</td>
                     <button @click="removeProduct(product.Product_id)">Remove product</button>
                 </tr>
 
@@ -71,7 +72,8 @@ const getCart = async () => {
             Price_single_product: response.data.data[i].Price,
             Price_products: response.data.price[i],
             Size: response.data.data[i].Size,
-            Product_id: response.data.data[i].Product
+            Product_id: response.data.data[i].Product,
+            Stock: response.data.data[i].Quantity,
         }
         //console.log(product)
         products.value.push(product);
@@ -88,7 +90,7 @@ const handleSubmit = async () => {
         for (let i = 0; i < products._value.length; i++) {
             if (products._value[i].Product_id == error.response.data.message) {
                 console.log(products._value[i].Description);
-                alert(`${products._value[i].chocolate}` + " " + `${products._value[i].Size}` + "g is out of stock");
+                alert("There is not " +`${products._value[i].Quantity}` +" " + `${products._value[i].chocolate}` + " " + `${products._value[i].Size}` + "g in stock");
             }
         }
     }

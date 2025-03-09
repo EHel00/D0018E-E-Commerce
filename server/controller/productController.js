@@ -77,9 +77,10 @@ const createCategory = (req, res) => {
 const deleteCategory = async(req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, deleting category`);
     let con;
+    logger.info(req.body)
     try {
         con = await db.promise().getConnection();
-        const result = await con.query(QUERY.deleteProduct, [req.params.id]);
+        const result = await con.query(QUERY.deleteCategory, [req.body.id]);
         res.status(200).json({message: 'Product deleted'});
     } catch (error) {
         logger.error(error.message);
@@ -328,7 +329,7 @@ const checkOut = async (req, res) => {
         const results = await con.query(QUERY.getCartAndSupply, [req.userId]);
         const data = results[0];
         if (data.length === 0) {
-            throw new Error('Cart is empty');
+            throw new Error('Cart or Supply is empty');
         }
         // start of transaction
         await con.beginTransaction();
