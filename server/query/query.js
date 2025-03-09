@@ -45,7 +45,7 @@ const Query = {
     updateOrderHistoryStatus: 'UPDATE OrderHistory SET Status = ? WHERE idOrderHistory = ?',
 
     //Shopping Cart Queries
-    fancyGetCart: 'SELECT *, Supply.Quantity as Stock FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category JOIN Supply on Product.idProduct = Supply.Product WHERE User = ?',
+    fancyGetCart: 'SELECT *, Supply.Quantity as Stock, ShoppingCart.Quantity as Amount FROM ShoppingCart JOIN Product ON ShoppingCart.Product = Product.idProduct JOIN Category on Category.CategoryID = Product.Category JOIN Supply on Product.idProduct = Supply.Product WHERE User = ?',
     findCartByUser: 'SELECT * FROM ShoppingCart WHERE User = ?',
     findProdInCartByUser: 'SELECT Product FROM ShoppingCart WHERE User = ?',
     addToCart: 'INSERT INTO ShoppingCart(User, Product, Quantity) VALUES (?, ?, ?)',
@@ -57,6 +57,7 @@ const Query = {
     //Grade Queries
     getGrades: 'SELECT Grade.Grade, Grade.Comment, User.FirstName as User FROM Grade JOIN User ON User.idUser = Grade.User WHERE Category = ?',
     addGrade: 'INSERT INTO Grade (User, Category, Grade, Comment) VALUES (?, ?, ?, ?)',
+    CategoryGrade: 'SELECT Grade.Category,Grade.Grade FROM Grade',
 }
 
 

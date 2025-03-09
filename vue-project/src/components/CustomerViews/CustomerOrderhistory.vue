@@ -30,10 +30,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="OrderDetailsData" v-for="order in orders[index]" :key="order.Description">
+                      <tr class="OrderDetailsData" v-for="order in orders[index]">
                         <td>{{ order.Description }}</td>
                         <td>{{ order.Size }}</td>
-                        <td>{{ order.Price }}</td>
+                        <td>{{ order.Price }} </td>
                         <td>{{ order.Quantity }}</td>
                       </tr>
                     </tbody>
@@ -93,6 +93,7 @@
   
   <style scoped>
   .order-history-table {
+    display: table-caption;
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
@@ -127,7 +128,8 @@
   }
   
   .order-history-container {
+    display: center;
     margin-top: 100px;
-    padding: 30px;
+   
   }
   </style>

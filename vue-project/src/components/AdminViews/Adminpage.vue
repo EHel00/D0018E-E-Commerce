@@ -3,15 +3,15 @@
     <AdminNavbar />
     <div class="store-container">
       <div v-for="Category in Categories" :key="Category.id" class="category-item">
-        <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button">
           <div class="store-box">
             <div> {{ Category.Description }}</div>
             <div> <img :src="Category.Image" class="category-image" /> {{ Category.Image }}</div>
+            <RouterLink :to="{ name: 'viewadminProduct', params: { id: Category.id }}" class="view_product_button"/>
+            <button @click="deleteCategory(Category.id)">Delete</button>
             <div>
               <button class="store-button">View Product</button>
             </div>
           </div>
-        </RouterLink>
       </div>
     </div>
     <form @submit.prevent="handleSubmit">
@@ -65,6 +65,19 @@ onMounted(async () => {
   }
 });
 
+const deleteCategory = async (id) => {
+  if (confirm("are you sure you want to delete this product?")){
+  try{
+    console.log("delete", id)
+    
+    const result = await deleteCategory(`/product/deleteCategory`, id);
+    console.log(result)
+  }catch(error){
+    console.log(error, "Failed to delete category")
+
+  }
+  
+}}
 
 </script>
   

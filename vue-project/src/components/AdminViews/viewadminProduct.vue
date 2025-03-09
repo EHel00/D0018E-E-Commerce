@@ -56,9 +56,9 @@ const deleteProduct = async (id) => {
   if (confirm("are you sure you want to delete this product?")) {
     try {
       console.log(id);
-      // const response = await apiClient.delete(`/product/deleteProduct/${id}`);
-      // console.log(response);
-      // window.location.reload();
+      const response = await apiClient.post(`/product/deleteProduct/${id}`);
+      console.log(response);
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting product:', error);
     }
