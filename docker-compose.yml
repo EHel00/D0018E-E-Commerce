@@ -46,15 +46,15 @@ services:
     build: ./vue-project
     image: vueapp
     volumes:
-      - ./client:/usr/code
+      - ./vue-project/src:/usr/code
     ports:
-      - 8080:8080
+      - 8080:80
     expose:
       - 8080
-    environment:
-      - SERVER_PORT=3000
     depends_on:
       - nodeapp
+    environment:
+      - SERVER_PORT=3000
     networks:
       - internalNetwork
 
