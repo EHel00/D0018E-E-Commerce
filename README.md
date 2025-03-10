@@ -1,4 +1,5 @@
 # D0018E-E-Commerce
-Erik Helgesson 
+Members:
+Erik Helgesson,
 Sebastian Pettersson
-
+# How to run
