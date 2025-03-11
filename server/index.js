@@ -14,8 +14,8 @@ app.use(cors({
     credentials: true,
      origin :[
             'http://localhost:80',
-            'http://13.60.182.242:80',
-            'http://13.60.182.242:8080',
+            'http://51.21.191.73:80',
+            'http://51.21.191.73:8080',
             'http://localhost:8080',
             'http://localhost:5173'
             ] 
