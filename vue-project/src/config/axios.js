@@ -4,7 +4,7 @@ import axios from 'axios';
 // byt mot vad man får i aws
 
 const apiClient = axios.create({
-    baseURL: 'http://13.60.182.242:3000/api',
+    baseURL: 'http://51.21.191.73:3000/api',
     withCredentials: true,
 });
 
